@@ -1,0 +1,1025 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>โลกโซเชียลจำลอง</title>
+<style>
+:root{--bg:#15202b;--card:#1e2732;--card2:#253341;--line:#2f3b4a;--tx:#e7edf3;--mute:#8b98a5;--acc:#1d9bf0;--acc2:#7856ff;--ok:#00ba7c;--warn:#ffd400;--bad:#f4212e}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.55 system-ui,-apple-system,"Noto Sans Thai","Sarabun",Tahoma,sans-serif;-webkit-text-size-adjust:100%}
+#app{max-width:660px;margin:0 auto;min-height:100vh;padding:0 0 84px}
+.pad{padding:14px}
+.row{display:flex;align-items:center;gap:10px}.row.top{align-items:flex-start}.wrap{flex-wrap:wrap}.gap{gap:8px}.grow{flex:1;min-width:0}
+.mute{color:var(--mute)}.sm{font-size:12.5px}.center{text-align:center}
+h1{font-size:22px;margin:0 0 4px}h2{font-size:17px;margin:0 0 8px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin:10px 14px}
+details.card>summary{cursor:pointer;font-weight:600;list-style:none;display:flex;align-items:center;gap:8px}
+details.card>summary::-webkit-details-marker{display:none}
+details.card>summary::before{content:"▸";color:var(--mute)}details[open].card>summary::before{content:"▾"}
+.btn{background:var(--card2);color:var(--tx);border:1px solid var(--line);border-radius:999px;padding:8px 16px;font:inherit;cursor:pointer}
+.btn:hover{filter:brightness(1.15)}.btn:disabled{opacity:.5;cursor:default}
+.btn.pri{background:var(--acc);border-color:var(--acc);color:#fff;font-weight:600}
+.btn.q{background:linear-gradient(135deg,var(--acc2),#c04bff);border:0;color:#fff;font-weight:600;padding:7px 14px}
+.btn.q.pulse{animation:pl 1.6s infinite}@keyframes pl{50%{box-shadow:0 0 0 6px rgba(120,86,255,.28)}}
+.btn.dng{color:#ff7b84}.btn.sm{padding:4px 12px;font-size:13px}
+.icon{background:none;border:0;color:var(--mute);font-size:19px;cursor:pointer;padding:4px 8px}
+.fld{display:block;margin:10px 0}.fld>span{display:block;font-size:13px;color:#b8c4d0;margin-bottom:3px;font-weight:600}.fld>small{display:block;color:var(--mute);font-size:12px;margin-bottom:4px}
+.inp{width:100%;background:#0f1721;color:var(--tx);border:1px solid var(--line);border-radius:10px;padding:9px 11px;font:inherit;resize:vertical}
+.inp:focus{outline:2px solid var(--acc);border-color:transparent}
+.hdr{position:sticky;top:0;z-index:5;background:rgba(21,32,43,.94);backdrop-filter:blur(8px);border-bottom:1px solid var(--line);padding:10px 14px;display:flex;align-items:center;gap:8px}
+.tabs{position:fixed;bottom:0;left:0;right:0;z-index:6;background:rgba(21,32,43,.97);border-top:1px solid var(--line);display:flex;justify-content:center;padding-bottom:env(safe-area-inset-bottom)}
+.tabs>div{display:flex;width:100%;max-width:660px}
+.tabs button{flex:1;background:none;border:0;color:var(--mute);padding:10px 0 9px;font:inherit;font-size:12px;cursor:pointer;position:relative}
+.tabs button b{display:block;font-size:20px;font-weight:400}.tabs button.on{color:var(--acc)}
+.badge{position:absolute;top:4px;left:56%;background:var(--bad);color:#fff;border-radius:99px;font-size:11px;padding:0 6px;font-weight:700}
+.av{position:relative;display:inline-flex;align-items:center;justify-content:center;border-radius:50%;background:var(--acc2);color:#fff;font-weight:700;overflow:hidden;flex:none;cursor:pointer}
+.av img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;background:transparent}
+.post{padding:12px 14px;border-bottom:1px solid var(--line)}.post.mine{background:rgba(29,155,240,.07)}.post.new{border-left:3px solid var(--acc2)}
+.post.hl{animation:hl 2s}@keyframes hl{0%{background:rgba(255,212,0,.25)}}
+.who b{cursor:pointer}.txt{white-space:pre-wrap;word-break:break-word;margin:2px 0 4px}
+.acts{display:flex;gap:22px;color:var(--mute);font-size:13.5px;margin-top:4px}.acts span{cursor:pointer}
+.reps{margin:8px 0 0 0;border-left:2px solid var(--line);padding-left:10px}
+.rep{padding:6px 0;display:flex;gap:8px}.rep .txt{margin:0;font-size:14.5px}
+.img-ph{margin:6px 0;padding:22px 12px;border-radius:12px;background:linear-gradient(135deg,#2a3b50,#3a2f55);color:#c9d3df;font-size:13.5px;text-align:center}
+.pimg{max-width:100%;border-radius:12px;margin:6px 0;display:block;max-height:340px}
+.pill{display:inline-block;background:var(--card2);border:1px solid var(--line);border-radius:99px;padding:1px 10px;font-size:12px;margin:2px 4px 2px 0}
+.pill.tag{background:rgba(244,33,46,.15);border-color:rgba(244,33,46,.5);color:#ff9aa1}
+.bar{height:9px;background:#0f1721;border-radius:99px;overflow:hidden;border:1px solid var(--line)}.bar>i{display:block;height:100%;background:linear-gradient(90deg,var(--acc),var(--acc2))}
+.bar.cap>i{background:linear-gradient(90deg,#ffd400,#ff9d00)}
+.thought{position:relative;background:#f4f1ff;color:#2a2340;border-radius:22px;padding:12px 16px;margin:6px 0 18px;font-style:italic}
+.thought::after{content:"";position:absolute;left:30px;bottom:-14px;width:16px;height:16px;border-radius:50%;background:#f4f1ff}
+.thought::before{content:"";position:absolute;left:20px;bottom:-26px;width:9px;height:9px;border-radius:50%;background:#f4f1ff}
+.modal{position:fixed;inset:0;z-index:20;background:rgba(0,0,0,.6);display:flex;align-items:flex-end;justify-content:center}
+.sheet{background:var(--bg);border:1px solid var(--line);width:100%;max-width:660px;max-height:92vh;overflow:auto;border-radius:20px 20px 0 0;padding:16px}
+@media(min-width:700px){.modal{align-items:center}.sheet{border-radius:20px}}
+#busy{position:fixed;inset:0;z-index:50;background:rgba(10,15,22,.82);display:none;flex-direction:column;align-items:center;justify-content:center;gap:14px;color:#dfe8f1;text-align:center;padding:20px}
+#busy.on{display:flex}.spin{width:42px;height:42px;border:4px solid #334; border-top-color:var(--acc2);border-radius:50%;animation:sp 1s linear infinite}@keyframes sp{to{transform:rotate(360deg)}}
+#toasts{position:fixed;top:12px;left:0;right:0;z-index:60;display:flex;flex-direction:column;align-items:center;gap:8px;pointer-events:none}
+
+.banner{position:fixed;left:50%;top:10px;transform:translateX(-50%);width:calc(100% - 20px);max-width:640px;z-index:25;background:#06261f;border:1.5px solid #19c39a;border-radius:26px;padding:16px 18px;box-shadow:0 12px 40px rgba(0,0,0,.6);max-height:85vh;overflow:auto}
+.banner.anim{animation:bnIn .45s cubic-bezier(.2,1.2,.4,1)}@keyframes bnIn{from{transform:translate(-50%,-130%);opacity:0}to{transform:translate(-50%,0);opacity:1}}
+.banner .xp{color:#ffd54a;font-size:26px}.up{color:#2ee6a6}.dn{color:#ff6b78}
+.chip{display:inline-flex;align-items:center;gap:6px;background:#0b3a30;border:1px solid #19c39a55;border-radius:99px;padding:3px 12px;margin:3px 6px 3px 0;font-weight:600}.chip.dn{background:#3a1519;border-color:#ff6b7855}
+.vbar{position:relative;height:9px;background:#0f1721;border:1px solid var(--line);border-radius:99px;overflow:hidden}.vbar:after{content:'';position:absolute;left:50%;top:0;bottom:0;width:1px;background:#556}.vbar i{position:absolute;top:0;bottom:0}.vbar .pos{background:#2ee6a6}.vbar .neg{background:#ff6b78}
+.plus{width:36px;height:36px;border-radius:11px;background:#ff9500;color:#fff;border:0;font-size:22px;font-weight:700;cursor:pointer}.plus:disabled{opacity:.3;cursor:default}
+.needTag{color:#ff9500;font-size:13px;font-weight:700}
+.ms-row{display:flex;align-items:center;margin-top:8px;overflow-x:auto}.ms{min-width:34px;height:34px;border-radius:50%;background:#222a35;border:2px solid #2d3745;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:700}.ms.done{background:var(--acc);border-color:var(--acc)}.ms.cur{border-color:#ffd54a;color:#ffd54a}.msl{height:3px;min-width:12px;flex:1;background:#2d3745}
+.toast{pointer-events:auto;background:#223;border:1px solid var(--line);padding:9px 16px;border-radius:12px;max-width:92vw;box-shadow:0 6px 20px rgba(0,0,0,.4);white-space:pre-wrap}
+.toast.err{background:#3a1519;border-color:var(--bad)}.toast.ok{background:#0f3326;border-color:var(--ok)}
+.intro{padding:26px 20px;font-size:17px;line-height:1.85}.intro p{margin:0 0 1.1em;animation:fi .8s both}@keyframes fi{from{opacity:0;transform:translateY(6px)}}
+.q-item{border:1px solid var(--line);border-radius:12px;padding:10px 12px;margin:8px 0;background:var(--card);cursor:pointer}.q-item.done{opacity:.45}.q-item.sel{border-color:var(--acc2)}
+.saverow{display:flex;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line)}
+.warn{background:rgba(255,212,0,.1);border:1px solid rgba(255,212,0,.4);border-radius:10px;padding:8px 12px;font-size:13.5px;margin:10px 14px}
+hr{border:0;border-top:1px solid var(--line);margin:12px 0}
+.quote{border:1px solid var(--line);border-radius:12px;padding:8px 10px;margin:6px 0;cursor:pointer}.miniPost{border-top:1px solid var(--line);padding:8px 0;cursor:pointer}
+.cnt{margin-left:auto;font-size:12px;color:var(--mute);font-weight:400}.over{color:#ff7b84!important;font-weight:700}
+.composer{position:sticky;bottom:-16px;background:var(--bg);padding:8px 0 6px;border-top:1px solid var(--line);margin-top:10px}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toasts"></div>
+<div id="busy"><div class="spin"></div><div id="busyMsg" style="font-size:16px"></div><div class="mute sm" id="busySub"></div></div>
+<input type="file" id="fileImport" accept=".json,application/json" hidden>
+<input type="file" id="filePick" accept="image/*" hidden>
+<script>
+'use strict';
+/* ================= util ================= */
+const $=(s,r=document)=>r.querySelector(s);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nl=s=>esc(s).replace(/\n/g,'<br>');
+const uid=(p='i')=>p+Math.random().toString(36).slice(2,8)+Date.now().toString(36).slice(-3);
+const rand=(a,b)=>Math.floor(Math.random()*(b-a+1))+a;
+const clamp=(n,a,b)=>Math.max(a,Math.min(b,Number(n)||0));
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+const pick=a=>a[Math.floor(Math.random()*a.length)];
+const shuffle=a=>{a=[...a];for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
+const trunc=(s,n)=>{s=String(s||'').trim();return s.length>n?s.slice(0,n)+'…':s};
+const getPath=(o,p)=>p.split('.').reduce((a,k)=>a==null?a:a[k],o);
+const setPath=(o,p,v)=>{const ks=p.split('.');const l=ks.pop();const t=ks.reduce((a,k)=>a[k],o);t[l]=v};
+const clock=()=>String(rand(6,23)).padStart(2,'0')+':'+String(rand(0,59)).padStart(2,'0');
+function toast(msg,type='',ms=3500){const el=document.createElement('div');el.className='toast '+type;el.textContent=msg;$('#toasts').appendChild(el);setTimeout(()=>el.remove(),ms)}
+const LS={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch{return d}},
+  set(k,v){try{localStorage.setItem(k,JSON.stringify(v));return true}catch(e){toast('บันทึกลงเบราว์เซอร์ไม่ได้ (พื้นที่เต็ม?) ลองส่งออกข้อมูลสำรองไว้','err',6000);return false}}};
+function readImage(file,max=480,q=.82){return new Promise((res,rej)=>{const fr=new FileReader();fr.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,max/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.round(im.width*k);c.height=Math.round(im.height*k);c.getContext('2d').drawImage(im,0,0,c.width,c.height);res(c.toDataURL('image/jpeg',q))};im.onerror=rej;im.src=fr.result};fr.onerror=rej;fr.readAsDataURL(file)})}
+function download(name,obj){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify(obj,null,1)],{type:'application/json'}));a.download=name;a.click();setTimeout(()=>URL.revokeObjectURL(a.href),2000)}
+
+/* ================= state ================= */
+const PRESETS={
+ demo:{label:'โหมดทดสอบ (ไม่ใช้ AI — ข้อความสำเร็จรูป)',base:'',model:''},
+ gemini:{label:'Google Gemini (มีรุ่นฟรี)',base:'https://generativelanguage.googleapis.com/v1beta/openai',model:'gemini-2.5-flash'},
+ groq:{label:'Groq (มีรุ่นฟรี)',base:'https://api.groq.com/openai/v1',model:'openai/gpt-oss-120b'},
+ openrouter:{label:'OpenRouter (มีรุ่น :free)',base:'https://openrouter.ai/api/v1',model:''},
+ cerebras:{label:'Cerebras (มีรุ่นฟรี)',base:'https://api.cerebras.ai/v1',model:''},
+ mistral:{label:'Mistral',base:'https://api.mistral.ai/v1',model:'mistral-small-latest'},
+ ollama:{label:'Ollama ในเครื่อง (ต้องตั้ง OLLAMA_ORIGINS)',base:'http://localhost:11434/v1',model:''},
+ custom:{label:'กำหนดเอง (OpenAI-compatible)',base:'',model:''},
+ none:{label:'ไม่ใช้ช่องนี้',base:'',model:''}
+};
+const SLOTS={main:['ตัวละครหลัก','เขียนโพสต์/ความคิดของตัวหลัก + บทเปิด (เน้นคุณภาพ)'],npc:['NPC / ชาวเน็ต','ฉากหลังฝูงชน (เน้นเร็ว/ถูก)'],referee:['กรรมการ / อ่านสถานการณ์','ให้คะแนน วางช่วงเรื่อง สร้างเควส (เน้นทำตาม JSON)'],backup:['สำรอง','ใช้เมื่อช่องหลักล้ม/ติดโควตา/ปฏิเสธ']};
+const KEY_HELP={gemini:'เอาคีย์ที่ aistudio.google.com/apikey (ล็อกอินบัญชี Google → Create API key)',groq:'เอาคีย์ที่ console.groq.com/keys',openrouter:'เอาคีย์ที่ openrouter.ai/keys (รุ่นฟรีชื่อลงท้าย :free)',cerebras:'เอาคีย์ที่ cloud.cerebras.ai',mistral:'เอาคีย์ที่ console.mistral.ai',ollama:'ไม่ต้องใช้คีย์ (ว่างได้)',custom:'ดูจากเอกสารของผู้ให้บริการ'};
+const PRESET_LIMITS={groq:[200000,1000],openrouter:[0,50],cerebras:[1000000,0],gemini:[0,0],mistral:[0,0],ollama:[0,0],custom:[0,0]};
+function defaultCaps(){return{world:8000,premise:2500,char:5000,player:5000,playerSend:5000,post:2000,answer:6000}}
+function defaultSettings(){const mk=p=>({preset:p,base:'',key:'',model:'',temp:0.9,dailyTokens:0,dailyReqs:0});return{slots:{main:mk('demo'),npc:mk('demo'),referee:mk('demo'),backup:mk('none')},expPerLevel:40,xpScale:100,lang:'auto',tone:'medium',crowd:6,dicebear:true,caps:defaultCaps()}}
+let settings=Object.assign(defaultSettings(),LS.get('ss_settings',{}));
+settings.slots=Object.assign(defaultSettings().slots,settings.slots);
+settings.caps=Object.assign(defaultCaps(),settings.caps||{});
+if(settings.caps.playerSend===2500)settings.caps.playerSend=5000;
+Object.values(settings.slots).forEach(c=>{if(c.dailyTokens==null)c.dailyTokens=0;if(c.dailyReqs==null)c.dailyReqs=0});
+let worlds=LS.get('ss_worlds',[]);
+let saves=LS.get('ss_saves',[]);
+const persistSettings=()=>LS.set('ss_settings',settings);
+const persistWorlds=()=>LS.set('ss_worlds',worlds);
+const persistSaves=()=>LS.set('ss_saves',saves);
+
+/* ---- game math: XP / skill points / followers / vibes / affinity ---- */
+const xpScale=()=>Math.max(.2,(Number(settings.xpScale)||100)/100);
+const xpNeed=L=>Math.max(5,Math.round((18+3*L)*xpScale()));
+const xpCum=L=>{let t=0;for(let i=1;i<L;i++)t+=xpNeed(i);return t};
+const levelFromXp=x=>{let L=1;while(L<100&&x>=xpCum(L+1))L++;return L};
+const START_FOL={1:40,2:150,3:800,4:6000,5:60000},NPC_FOL={1:200,2:1500,3:12000,4:90000,5:700000};
+const hashN=str=>{let h=0;for(const ch of String(str))h=(h*31+ch.charCodeAt(0))>>>0;return h};
+const starsFromFol=n=>n<80?1:n<500?2:n<5000?3:n<50000?4:5;
+const defaultVibes=()=>[{name:'เสน่ห์',desc:'ความน่าหลงใหล/ความขำ',v:0},{name:'บารมี',desc:'ความน่าเกรงขาม/ความน่าเชื่อถือ',v:0}];
+const affVal=(s,id)=>Number(s.aff&&s.aff[id])||0;
+const affLabel=v=>v<=-80?'เกลียดเข้ากระดูก':v<=-50?'เกลียด':v<=-20?'ไม่ชอบ':v<20?'เฉยๆ':v<50?'เริ่มถูกใจ':v<80?'ชอบมาก':'ติดใจสุดๆ';
+const affLine=(s,id)=>{const v=affVal(s,id);return v?`\n  ความรู้สึกที่มีต่อตัวเอกตอนนี้: ${affLabel(v)} (${v})`:''};
+const skillLv=k=>Math.max(0,Math.min(100,Number(k&&k.pts)||0));
+const skillTier=k=>{const t=k.tiers;const p=skillLv(k);if(Array.isArray(t)&&t.length>=4)return t[p<25?0:p<50?1:p<75?2:3];return k.desc||''};
+const questRange=s=>{const lv=1+(s.level||1)/50;return[Math.round((8+3*4.2)*lv),Math.round((8+9*4.2)*lv)]};
+function fixGates(stages){
+  stages.forEach((st,i)=>{
+    if(i>=stages.length-1){st.gate=[];return}
+    const seen=[];(st.gate||[]).forEach(g=>{const k=clamp(g.skill,0,2);if(!seen.includes(k))seen.push(k)});
+    for(const k of [0,1,2]){if(seen.length>=2)break;if(!seen.includes(k))seen.push(k)}
+    const R=Math.max(1,Math.round((st.level_to||20)*.75));
+    st.gate=seen.slice(0,2).map((k,j)=>({skill:k,level:j?Math.max(1,R-3):R}));
+  });
+}
+function folOf(w,s,key){
+  if(key==='me')return Math.round(s.followers||0);
+  if(String(key).startsWith('x:'))return 30+hashN(key)%900;
+  s.npcFol=s.npcFol||{};
+  if(s.npcFol[key]==null){const c=w.chars.find(c=>c.id===key);s.npcFol[key]=Math.round(NPC_FOL[clamp((c&&c.fame)||3,1,5)]*(0.6+(hashN(key)%100)/100))}
+  return Math.round(s.npcFol[key]);
+}
+function migrateSave(s){
+  if(!s||s.v>=2)return s;
+  const per=Math.max(5,settings.expPerLevel||40);const oldLv=Math.min(100,1+Math.floor((s.exp||0)/per));const into=((s.exp||0)%per)/per;
+  s.rawLv=oldLv;s.exp=xpCum(oldLv)+(oldLv<100?Math.round(into*xpNeed(oldLv)):0);
+  let spent=0;(s.skills||[]).forEach(k=>{const o=Math.min(10,1+Math.floor((k.exp||0)/25));k.pts=(o-1)*3;spent+=k.pts;delete k._up;delete k.exp});
+  s.skillPts=Math.max(0,Math.round(2.5*(oldLv-1))-spent);
+  s.vibes=(s.vibes&&s.vibes.length)?s.vibes:defaultVibes();
+  const w=worlds.find(x=>x.id===s.worldId);const base=clamp((w&&w.player&&w.player.fame)||1,1,5);
+  s.followers=s.followers!=null?s.followers:Math.round(START_FOL[base]*(1+(oldLv-1)*.08));
+  s.aff=s.aff||{};s.npcFol=s.npcFol||{};
+  if(s.stages&&s.stages.length)fixGates(s.stages);
+  s.v=2;return s;
+}
+function calcFollowers(s,ev,action){
+  if(ev.exposure==='private')return 0;
+  const F=s.followers||50,sc=ev.score;
+  let g=F*(sc-3.5)*0.006+(sc>=4?rand(2,12)*(1+(s.level||1)/8):0);
+  if(sc>=8)g*=rand(15,30)/10;
+  if(ev.exposure==='vague')g*=.5;
+  if(action.kind==='quest')g*=.7;
+  return Math.max(-Math.floor(F*.05),Math.round(g));
+}
+function calcXP(s,ev,action,fg,affCh){
+  const lv=1+(s.level||1)/50;
+  const base=Math.round((action.kind==='quest'?8+ev.score*4.2:5+ev.score*3.2)*lv);
+  const mean=s.vibes&&s.vibes.length?s.vibes.reduce((a,v)=>a+v.v,0)/s.vibes.length:0;
+  const vm=1+.2*mean/100;const viral=fg>=Math.max(20,(s.followers||0)*.04)?1.1:1;
+  const rel=Math.min(15,Math.round(affCh.reduce((a,x)=>a+Math.abs(x.d),0)*2*lv));
+  return{xp:Math.max(1,Math.round(base*vm*viral)+rel),base,vm:Math.round(vm*100)/100,viral:viral>1,rel};
+}
+let _mig=false;saves.forEach(x=>{if(x&&x.v!==2){migrateSave(x);_mig=true}});if(_mig)persistSaves();
+/* ---- usage / quota ---- */
+const charsPerTok=t=>{t=String(t||'');let th=0;for(let i=0;i<t.length;i++){const c=t.charCodeAt(i);if(c>=0x0E00&&c<=0x0E7F)th++}return th/Math.max(1,t.length)>.25?1.7:4};
+const estTok=t=>{t=String(t||'');return Math.ceil(t.length/charsPerTok(t))};
+const todayStr=()=>{const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')};
+let usage=LS.get('ss_usage',null)||{date:todayStr(),slots:{},avg:{},exhausted:{}};
+usage.avg=usage.avg||{};usage.exhausted=usage.exhausted||{};usage.slots=usage.slots||{};
+let turnTokens=0;
+const persistUsage=()=>LS.set('ss_usage',usage);
+function usageRoll(){if(usage.date!==todayStr()){usage={date:todayStr(),slots:{},avg:usage.avg||{},exhausted:{}};persistUsage()}}
+function slotUse(k){usageRoll();return usage.slots[k]||(usage.slots[k]={calls:0,in:0,out:0})}
+const slotId=k=>{const c=settings.slots[k];const P=PRESETS[c.preset]||{};return (c.base||P.base||c.preset)+'|'+(c.model||P.model||'')+'|'+(c.key||'').slice(-6)};
+function recordUsage(k,u,estIn,estOut){const s=slotUse(k);const i=u&&u.prompt_tokens!=null?Number(u.prompt_tokens):estIn;const o=u&&u.completion_tokens!=null?Number(u.completion_tokens):estOut;s.calls++;s.in+=i;s.out+=o;turnTokens+=i+o;const a=usage.avg[k]||(usage.avg[k]={t:0,n:0});a.t=a.n?a.t*.7+(i+o)*.3:i+o;a.n++;delete usage.exhausted[slotId(k)];persistUsage()}
+const exhaustedNow=k=>{const e=usage.exhausted[slotId(k)];return !!e&&Date.now()<e};
+const realSlot=k=>!['none','demo'].includes(settings.slots[k].preset);
+function groupUse(k){const id=slotId(k);return Object.keys(settings.slots).filter(x=>realSlot(x)&&slotId(x)===id).reduce((a,x)=>{const u=slotUse(x),c=settings.slots[x];a.calls+=u.calls;a.tok+=u.in+u.out;a.limT=Math.max(a.limT,c.dailyTokens||0);a.limR=Math.max(a.limR,c.dailyReqs||0);return a},{calls:0,tok:0,limT:0,limR:0})}
+const fmtN=n=>n>=1e6?(n/1e6).toFixed(2)+'M':n>=1000?(n/1000).toFixed(n>=1e5?0:1)+'K':String(Math.round(n));
+const EST_DEFAULT={main:9000,referee:6000,npc:4500,backup:6000};
+function precheck(needs){
+  usageRoll();const groups={};
+  for(const [k,n] of Object.entries(needs)){const c=settings.slots[k];if(!c||!realSlot(k))continue;const id=slotId(k);const g=groups[id]||(groups[id]={k,names:[],est:0,calls:0});g.names.push(SLOTS[k][0]);g.est+=((usage.avg[k]&&usage.avg[k].t)||EST_DEFAULT[k]||6000)*n;g.calls+=Math.ceil(n)}
+  const issues=[];
+  for(const g of Object.values(groups)){const u=groupUse(g.k);const nm=g.names.join(' + ');
+    if(exhaustedNow(g.k))issues.push(nm+': ผู้ให้บริการเพิ่งแจ้งว่าโควตารายวันหมด');
+    else if(u.limT>0&&u.tok+g.est>u.limT)issues.push(nm+': ใช้ไปแล้วราว '+fmtN(u.tok)+' จาก '+fmtN(u.limT)+' โทเค็น/วัน (การกระทำนี้กินราว '+fmtN(g.est)+')');
+    else if(u.limR>0&&u.calls+g.calls>u.limR)issues.push(nm+': ใช้ไปแล้ว '+u.calls+' จาก '+u.limR+' คำขอ/วัน')}
+  return issues;
+}
+function quotaGate(needs){const issues=precheck(needs);if(!issues.length)return Promise.resolve(true);return new Promise(res=>{ui.modal={type:'quota',issues};ui.quotaRes=res;render()})}
+
+let ui={screen:'home',tab:'feed',worldId:null,saveId:null,draft:null,modal:null,openComment:null,typing:null,composeText:'',composeImg:'',composeCap:'',commentText:'',firstText:'',questSel:null,questText:'',models:{},busy:false,editChar:false,open:{},replyTo:null,quotaRes:null,newGoalText:''};
+const curWorld=()=>worlds.find(w=>w.id===ui.worldId);
+const curSave=()=>saves.find(s=>s.id===ui.saveId);
+
+function newChar(isPlayer){return{id:isPlayer?'me':uid('c'),name:'',handle:'',role:'',gender:'',pronoun:'',selfRef:'',subtype:'',fame:isPlayer?1:3,bio:'',appearance:'',personality:'',socialStyle:'',likes:'',dislikes:'',behavior:'',backstory:'',samplePosts:'',late:false,avatar:'',currentStatus:''}}
+function newWorld(){return{id:uid('w'),name:'',setting:{platform:'',genre:'',atmosphere:'',laws:'',values:'',topics:'',extra:''},premise:'',goal:'',player:newChar(true),chars:[]}}
+
+/* ================= LLM layer ================= */
+async function callLLM(slotName,messages,opts={}){
+  const s=settings.slots[slotName];
+  if(!s||s.preset==='none')throw new Error('ช่อง "'+slotName+'" ยังไม่ได้ตั้งค่า');
+  const P=PRESETS[s.preset]||{};
+  const base=(s.base||P.base||'').replace(/\/+$/,'');const model=s.model||P.model;
+  if(!base)throw new Error('ช่อง "'+SLOTS[slotName][0]+'": ยังไม่ได้ใส่ Base URL');
+  if(!model)throw new Error('ช่อง "'+SLOTS[slotName][0]+'": ยังไม่ได้ใส่ชื่อโมเดล (กด "ดึงรายชื่อโมเดล" ในตั้งค่า)');
+  const headers={'Content-Type':'application/json'};if(s.key)headers.Authorization='Bearer '+s.key;
+  const body={model,messages,temperature:opts.temp??s.temp??0.9};
+  let res,to;
+  try{res=await Promise.race([fetch(base+'/chat/completions',{method:'POST',headers,body:JSON.stringify(body)}),new Promise((_,rej)=>{to=setTimeout(()=>rej(Object.assign(new Error('timeout'),{name:'TimeoutError'})),150000)})])}
+  catch(e){throw new Error(e.name==='TimeoutError'?'หมดเวลารอโมเดล':'เชื่อมต่อไม่ได้ ('+e.message+') — เช็ก Base URL / อินเทอร์เน็ต / คีย์')}
+  finally{clearTimeout(to)}
+  if(!res.ok){let t='';try{t=(await res.text()).slice(0,260)}catch{}const e=new Error('HTTP '+res.status+' '+t);e.status=res.status;
+    if(res.status===429&&/per day|daily|TPD|RPD|PerDay|free-models-per-day/i.test(t)){const d=new Date();d.setHours(24,0,0,0);usage.exhausted[slotId(slotName)]=d.getTime();persistUsage()}
+    throw e}
+  const data=await res.json();const txt=data.choices?.[0]?.message?.content;
+  if(!txt)throw new Error('โมเดลตอบว่างเปล่า (อาจถูกบล็อกเนื้อหา)');
+  recordUsage(slotName,data.usage,estTok(messages.map(m=>m.content).join('')),estTok(txt));
+  return txt;
+}
+function parseJSON(txt){
+  txt=String(txt).replace(/<think>[\s\S]*?<\/think>/gi,'').trim();
+  const f=txt.match(/```(?:json)?\s*([\s\S]*?)```/i);if(f)txt=f[1].trim();
+  const a=txt.indexOf('{'),b=txt.lastIndexOf('}');
+  if(a<0||b<=a){const e=new Error('โมเดลไม่ได้ตอบเป็น JSON'+(/ขออภัย|ไม่สามารถ|sorry|cannot|can't/i.test(txt)?' (น่าจะปฏิเสธ)':''));e.parse=true;throw e}
+  let s=txt.slice(a,b+1);
+  try{return JSON.parse(s)}catch(e){try{return JSON.parse(s.replace(/,\s*([}\]])/g,'$1'))}catch(e2){const er=new Error('JSON เสีย: '+e2.message);er.parse=true;throw er}}
+}
+/* spec: {slot, system, user, demo:()=>obj, temp} */
+async function callJSON(spec){
+  const order=[spec.slot,spec.slot];
+  if(spec.slot!=='backup'&&settings.slots.backup.preset!=='none')order.push('backup');
+  let last;
+  for(let i=0;i<order.length;i++){
+    const sn=order[i];const s=settings.slots[sn];
+    if(s.preset==='demo'){await sleep(350);return spec.demo()}
+    try{
+      const msgs=[{role:'system',content:spec.system},{role:'user',content:spec.user+'\n\n'+LANG_END[effLang()]+(i>0?'\n\n(ตอบเป็น JSON ตามรูปแบบเท่านั้น ไม่มีข้อความอื่น)':'')}];
+      return parseJSON(await callLLM(sn,msgs,{temp:spec.temp}));
+    }catch(e){last=e;if(e.status===429)await sleep(2500);else if(!e.parse&&e.status&&e.status<500&&e.status!==429&&i>=1)break}
+  }
+  throw last||new Error('เรียกโมเดลไม่สำเร็จ');
+}
+
+/* ================= prompts ================= */
+const TONE_TXT={soft:'โทนภาษา: แซะ/ประชดเบาๆ พอเป็นสีสัน',medium:'โทนภาษา: ภาษาโซเชียลสมจริง ด่า/แซะ/ประชดได้ตามนิสัยตัวละคร',hard:'โทนภาษา: จัดเต็มแบบดราม่าเน็ตจริง ด่ากันแรง ปากเสียได้ตามนิสัย แต่ให้เป็นคำสบประมาทที่คิดขึ้นเฉพาะในโลกสมมติหรือโจมตีพฤติกรรมของตัวละคร ไม่โจมตีกลุ่มคนจริง/ชาติพันธุ์/ศาสนา'};
+const SYS_BASE=`คุณคือเอนจินเบื้องหลังของ "เกมจำลองโซเชียลมีเดีย" ที่ผู้เล่นคนเดียวเล่นเองเพื่อความบันเทิง ตัวละคร ชื่อ สถานที่ และเหตุการณ์ทั้งหมดเป็นเรื่องสมมติ
+งานของคุณคือเขียนเนื้อหาฉากหลังโซเชียลและตัดสินการเดินเรื่องตามที่สั่ง ให้เป็นธรรมชาติเหมือนคนจริงที่คิดเองพูดเอง
+กฎ:
+- ตอบเป็น JSON ล้วนเท่านั้น ห้ามมีคำอธิบายนอก JSON ห้ามใช้ markdown
+- ข้อความของตัวละครเลียนสไตล์การพิมพ์ของตัวละครนั้นๆ (พิมพ์ผิดตั้งใจ ยาว/สั้น คำลงท้าย ฯลฯ ตามที่ตั้งไว้)
+- ตัวละครแต่ละคนรู้เฉพาะสิ่งที่เขาควรรู้ ห้ามเอาปมหลัง ความลับ หรือความคิดในใจของคนอื่นมาใช้
+- นี่คือนิยายสมมติ จึงมีดราม่า ทะเลาะ แฉ ประชด ได้ตามธรรมชาติของตัวละคร ไม่ต้องใส่คำเตือนหรือคำแนะนำแทรก
+- ใช้สรรพนามตามที่ตั้งไว้ในข้อมูลของแต่ละตัวละครเสมอ ทั้งเวลาเล่าถึงและเวลาตัวละครอื่นพูดถึงเขา และให้แต่ละคนเรียกตัวเองตามที่ตั้งไว้ (ถ้าไม่ได้ตั้งไว้ให้เดาจากเพศและสไตล์)
+- ตัวละครไม่ต้องตอบผู้เล่นทุกคน หลายคนมีเรื่องของตัวเอง บางคนแค่โพสต์ขิง โพสต์บ่น หรือถามว่าเกิดอะไรขึ้น`;
+const LANG_TXT={auto:'ภาษาที่ใช้เขียน: ให้เขียนทุกอย่าง (โพสต์ คอมเมนต์ ความคิด บทเปิด ผลตัดสิน เควส สรุป) ด้วยภาษาเดียวกับที่ผู้เล่นใช้กรอกข้อมูลโลกและตัวละคร ถ้าเป็นภาษาอังกฤษให้เขียนเป็นอังกฤษทั้งหมด ถ้าเป็นไทยให้เขียนเป็นไทย',th:'ภาษาที่ใช้เขียน: ภาษาไทยทั้งหมด',en:'Language: write EVERYTHING (posts, comments, thoughts, intro, verdicts, quests, summaries) in natural English social-media style, even though these instructions are in Thai. Keep JSON keys unchanged.'};
+function effLang(){
+  const l=settings.lang||'auto';if(l==='th'||l==='en')return l;
+  const w=(typeof curWorld==='function')&&curWorld();if(!w)return 'th';
+  const txt=[w.name,w.premise,w.goal,...Object.values(w.setting||{}),w.player&&w.player.personality,w.player&&w.player.bio,...(w.chars||[]).map(c=>[c.name,c.bio,c.personality,c.backstory,c.samplePosts].join(' '))].join(' ');
+  const th=(txt.match(/[฀-๿]/g)||[]).length,la=(txt.match(/[A-Za-z]/g)||[]).length;
+  return th>la*.15?'th':'en';
+}
+const LANG_END={en:'IMPORTANT — OUTPUT LANGUAGE: Write EVERY text value (posts, comments, replies, thoughts, intro, verdict, headline, summary, situation, quests, skill names and tier lines, vibe names, stage titles/notes, status tags, hints) in natural English. Do NOT use Thai anywhere, even though the instructions above are in Thai. Keep JSON keys, ids and enum values (public/vague/private, high/low) exactly as specified.',th:'สำคัญ — ภาษาของคำตอบ: เขียนค่าข้อความทุกอย่างเป็นภาษาไทย ห้ามปนภาษาอังกฤษยกเว้นชื่อเฉพาะ คง JSON key, id และค่า enum ตามที่กำหนด'};
+const sysFor=()=>SYS_BASE+'\n'+TONE_TXT[settings.tone||'medium']+'\n'+LANG_TXT[effLang()];
+const L=(label,v,n)=>{v=v==null?'':String(v).trim();return v?`${label}: ${n?trunc(v,n):v}`:''};
+const J=(...a)=>a.filter(Boolean).join('\n');
+const isActive=(s,c)=>!c.late||!!s.unlocked[c.id];
+const activeChars=(w,s)=>w.chars.filter(c=>isActive(s,c));
+/* ---- caps & fitting ---- */
+const WF=['genre','atmosphere','laws','values','topics','extra'];
+const WORLD_TRIM=['extra','values','laws','atmosphere','genre','topics'];
+const CF=['bio','appearance','personality','socialStyle','likes','dislikes','behavior','backstory','samplePosts'];
+const CHAR_TRIM=['backstory','samplePosts','behavior','dislikes','likes','bio','appearance','socialStyle','personality'];
+const PF=['bio','appearance','personality','socialStyle','likes','dislikes','behavior','backstory','currentStatus'];
+const PLAYER_TRIM=['socialStyle','likes','dislikes','appearance','bio','behavior','personality','backstory','currentStatus'];
+const lenOf=(o,f)=>f.reduce((a,k)=>a+String((o&&o[k])||'').length,0);
+function fitObj(o,fields,order,cap){const r={...o};let total=lenOf(r,fields);for(const k of order){if(total<=cap)break;const v=String(r[k]||'');const cut=Math.min(v.length,total-cap);r[k]=v.slice(0,v.length-cut);total-=cut}return r}
+function worldBrief(w,cap){const t=fitObj(w.setting,WF,WORLD_TRIM,cap||settings.caps.world);return J(L('ชื่อโลก',w.name),L('แพลตฟอร์มโซเชียลในโลกนี้',w.setting.platform),L('แนวโลก',t.genre),L('บรรยากาศ/ผู้คนทำมาหากิน',t.atmosphere),L('กฎหมาย/ระบบสังคม',t.laws),L('ค่านิยม',t.values),L('สิ่งที่ชาวเน็ตในโลกนี้บ่น/สนใจ',t.topics),L('อื่นๆ',t.extra))}
+function pgText(w,s,lim){const f=fitObj({premise:w.premise,goal:(s&&s.goal)||w.goal},['premise','goal'],['premise','goal'],lim||settings.caps.premise);return J(L('สถานการณ์เริ่มต้น',f.premise),L('เป้าหมายของตัวเอก',f.goal))}
+function charCard(c,d,isP){
+  const head=`• id=${c.id} | ${c.name||'(ไม่มีชื่อ)'} (@${c.handle||c.name}) | บทบาทกับตัวเอก: ${c.role||'-'} | เพศ: ${c.gender||'-'}${c.subtype?' | เพศรอง/สถานะพิเศษ: '+c.subtype:''}${c.pronoun?' | สรรพนามที่ใช้เรียกเขา/เธอ: '+c.pronoun:''}${c.selfRef?' | เรียกตัวเองว่า: '+c.selfRef:''}`;
+  if(isP||d>=2){
+    const f=fitObj(c,isP?PF:CF,isP?PLAYER_TRIM:CHAR_TRIM,isP?(d>=2?settings.caps.playerSend:Math.min(settings.caps.playerSend,3000)):settings.caps.char);
+    return J(head,L('  นิสัยจริง',f.personality),L('  สไตล์พิมพ์ในโซเชียล',f.socialStyle),L('  ชอบ',f.likes),L('  ไม่ชอบ',f.dislikes),L('  หน้าตาจริง',f.appearance),L('  เวลาเจอสถานการณ์ต่างๆ รับมือ/ปฏิกิริยา',f.behavior),L('  ไบโอสาธารณะ',f.bio),
+      isP?L('  ความสัมพันธ์/ภาพลักษณ์ตอนนี้',f.currentStatus):'',L('  ปมหลัง (ความลับ ตัวละครอื่นไม่รู้เว้นแต่ระบุไว้ในข้อเท็จจริง)',f.backstory),isP?'':L('  ตัวอย่างโพสต์ของเขา',f.samplePosts));
+  }
+  return J(head,L('  นิสัยจริง',c.personality,500),L('  สไตล์พิมพ์',c.socialStyle,150),L('  ชอบ',c.likes,150),L('  ไม่ชอบ',c.dislikes,150),L('  รับมือ/ปฏิกิริยา',c.behavior,300),L('  ปมหลัง(ย่อ)',c.backstory,700));
+}
+function entName(w,s,key){const e=ent(w,s,key);return e.name||'?'}
+function ent(w,s,key){
+  if(key==='me')return w.player;
+  if(key&&key.startsWith('x:')){const h=key.slice(2);const x=s.crowd.find(x=>x.handle===h)||{name:h,handle:h};return{...x,crowd:true,id:key}}
+  return w.chars.find(c=>c.id===key)||{name:'?',handle:'?',id:key};
+}
+function recentFeed(w,s,n){const ps=[...s.posts].sort((a,b)=>b.ord-a.ord).slice(0,n).reverse();return ps.length?ps.map(p=>`[${p.id}] ${entName(w,s,p.author)} (วัน${p.day}): ${trunc(p.text,140)}${p.replies.length?` (มี ${p.replies.length} คอมเมนต์)`:''}`).join('\n'):'(ยังไม่มีโพสต์)'}
+function ctxBlock(w,s,d,o={}){
+  const st=s.stages[s.stageIdx]||{};const act=activeChars(w,s);const later=w.chars.filter(c=>!isActive(s,c));const p=w.player;
+  const dep=c=>o.focus?(o.focus.includes(c.id)?2:1):d;
+  return J('=== โลก ===',worldBrief(w,o.worldCap),
+   '=== เรื่องตั้งต้น ===',pgText(w,s),
+   s.stages.length?`=== ช่วงเรื่องตอนนี้ (ช่วงที่ ${s.stageIdx+1}/${s.stages.length}: ${st.title||''}) ===`:'',L('สภาพเรื่อง',st.state),L('ท่าทีของโลก/NPC ในช่วงนี้',st.note),
+   L('สรุปเหตุการณ์ล่าสุด',s.summary),
+   s.facts.length?'ข้อเท็จจริงที่เกิดขึ้นแล้ว:\n'+s.facts.slice(-18).map(f=>`- ${f.text} (รู้: ${!f.known_by||f.known_by==='all'?'ทุกคน':[].concat(f.known_by).join(',')})`).join('\n'):'',
+   '=== ตัวเอก (ผู้เล่น) id=me ===',charCard(p,d,true),L('โน้ตสถานะเพิ่มเติม',s.playerNote),L('ป้ายสถานะ',s.status.join(', ')),
+   '=== ตัวละครหลักที่อยู่ในฉากตอนนี้ ===',act.map(c=>charCard(c,dep(c))+affLine(s,c.id)).join('\n')||'(ไม่มี)',
+   later.length?'(ตัวละครที่ยังไม่ปรากฏตัว ห้ามพูดถึงหรือให้โผล่: '+later.map(c=>c.name).join(', ')+')':'',
+   s.crowd.length?'=== ชาวเน็ตประจำ ===\n'+s.crowd.slice(-20).map(x=>`- ${x.name} (@${x.handle}): ${x.persona||''}`).join('\n'):'',
+   '=== ฟีดล่าสุด ===',recentFeed(w,s,10));
+}
+const actionText=(a,n)=>{const t=n?trunc(a.text,n):a.text;return a.kind==='post'
+  ?`ผู้เล่นโพสต์ในโซเชียล:\n"${t}"${a.caption?`\n(แนบรูป: ${a.caption})`:a.image?'\n(แนบรูปภาพ)':''}`
+  :`เควสสถานการณ์ในชีวิตจริง: ${a.quest.title}\n${a.quest.situation}\nสิ่งที่ผู้เล่นตอบ/ทำ:\n"${t}"`};
+
+/* ---- plan / intro ---- */
+async function genPlan(w,s,keepSkills){
+  const user=J(ctxBlock(w,s,2),
+`งานของคุณ: วางโครงการเดินเรื่องระยะยาว (เลเวล 1-100) จากสถานการณ์เริ่มต้นไปสู่เป้าหมายของตัวเอก
+- skills: ${keepSkills?'ใช้สกิลเดิม (ใส่ซ้ำตามนี้): '+s.skills.map(k=>k.name).join(', '):'สกิล 3 อย่างที่ตัวเอกต้องพัฒนาเพื่อไปถึงเป้าหมาย ตั้งชื่อเฉพาะเรื่องนี้ (เช่น ทนคำด่าโดยไม่ร้องไห้) พร้อมคำอธิบายสั้น และ tiers = 4 บรรทัดสั้นๆ แนวตลกเสียดสี บรรยายความเก่งของสกิลนั้นที่ระดับ 0-24 / 25-49 / 50-74 / 75-100 ตามลำดับ (ยิ่งสูงยิ่งเก่ง)'}
+- vibes: ค่านิสัย 2-3 อย่างที่สะท้อนวิธีแสดงออกของตัวเอกในโลกนี้ (เช่น ตลก, ออร่า, ความน่าเกรงขาม) ตั้งชื่อสั้นเฉพาะเรื่องนี้ พร้อมคำอธิบายสั้น (เริ่มที่ 0 ขึ้นลงได้ตามสิ่งที่ผู้เล่นทำ)
+- stages: 5-7 ช่วงเรื่อง เรียงตามลำดับ แต่ละช่วงมี level_to (เลเวลสูงสุดของช่วงนั้น) เพิ่มขึ้นเรื่อยๆ และช่วงสุดท้ายต้องเป็น 100
+  ช่วงแรกคือสภาพตอนนี้ (เช่น ตัวเอกยังไม่รู้ตัว/ยังเข้าใจผิด) ช่วงหลังๆ คือการค่อยๆ ตระหนัก ลงมือ และบรรลุเป้าหมาย โลกและท่าทีของ NPC ต้องเปลี่ยนตามช่วงอย่างเป็นธรรมชาติ
+  gate = สกิล 2 อย่างที่ต้องพัฒนาก่อนข้ามไปช่วงถัดไป: [{"skill":0-2},{"skill":0-2}] (ระบบกำหนดระดับเอง ช่วงสุดท้ายใส่ [])
+  introduces = id ตัวละครที่ยังไม่ปรากฏตัวและควรปรากฏตอนเข้าช่วงนั้น (ถ้ามี)
+- first_post_hint: คำแนะนำสั้นๆ 2-3 ประโยค บอกผู้เล่นว่าตัวละครคนนี้ "น่าจะ" โพสต์อะไรเป็นโพสต์แรก (ตามนิสัยและสถานการณ์ตอนนี้) ไม่ต้องเฉลยเรื่องที่ตัวเอกยังไม่รู้
+ตอบ JSON เท่านั้น:
+{"skills":[{"name":"","desc":"","tiers":["","","",""]},{"name":"","desc":"","tiers":["","","",""]},{"name":"","desc":"","tiers":["","","",""]}],"vibes":[{"name":"","desc":""},{"name":"","desc":""}],"stages":[{"title":"","state":"","note":"","level_to":20,"gate":[{"skill":0},{"skill":1}],"introduces":[]}],"first_post_hint":""}`);
+  const out=await callJSON({slot:'referee',system:sysFor(),user,temp:.8,demo:()=>DEMO.plan(w)});
+  let stages=(out.stages||[]).filter(x=>x&&x.title).map(x=>({title:String(x.title),state:String(x.state||''),note:String(x.note||''),level_to:clamp(x.level_to,5,100),gate:(Array.isArray(x.gate)?x.gate:[]).map(g=>({skill:clamp(g.skill,0,2),level:1})),introduces:(Array.isArray(x.introduces)?x.introduces:[]).map(String)}));
+  if(stages.length<2)throw new Error('โมเดลวางช่วงเรื่องไม่สำเร็จ (ได้น้อยกว่า 2 ช่วง) ลองกดเริ่มใหม่ หรือเปลี่ยนโมเดลช่อง "กรรมการ"');
+  stages.sort((a,b)=>a.level_to-b.level_to);
+  stages.forEach((x,i)=>{if(i>0&&x.level_to<=stages[i-1].level_to)x.level_to=Math.min(99,stages[i-1].level_to+5)});
+  stages[stages.length-1].level_to=100;stages[stages.length-1].gate=[];fixGates(stages);
+  let skills=(out.skills||[]).filter(k=>k&&k.name).slice(0,3).map(k=>({name:String(k.name),desc:String(k.desc||''),pts:0,tiers:Array.isArray(k.tiers)?k.tiers.slice(0,4).map(String):[]}));
+  while(skills.length<3)skills.push({name:['ความกล้า','การอ่านคน','ตั้งหลัก'][skills.length],desc:'',pts:0,tiers:[]});
+  let vibes=(Array.isArray(out.vibes)?out.vibes:[]).filter(v=>v&&v.name).slice(0,3).map(v=>({name:String(v.name),desc:String(v.desc||''),v:0}));if(vibes.length<2)vibes=defaultVibes();
+  return{stages,skills,vibes,hint:String(out.first_post_hint||'ลองโพสต์อะไรสักอย่างที่ตัวละครของคุณจะโพสต์ตอนนี้ ตามนิสัยของเขา')};
+}
+async function genIntro(w,s){
+  const user=J(ctxBlock(w,s,2),
+`งาน: เขียน "บทเปิดเรื่อง" ให้ผู้เล่นอ่านก่อนเริ่มเกม ความยาว 4-6 ย่อหน้า เล่าแบบนิยายบุรุษที่สอง ("คุณ...") ย้อนอดีต/บริบทที่พาตัวเอกมาถึงจุดนี้ ปูตัวละครสำคัญและบรรยากาศโลกให้เข้ากับสถานการณ์เริ่มต้น ปิดท้ายตอนที่ตัวเอกเปิดโซเชียลขึ้นมา โดยยังไม่เฉลยความจริงที่ตัวเอกยังไม่รู้ (ความลับ/ใจจริงของตัวละครอื่น ให้ใบ้ได้แค่เท่าที่ตัวเอกพอสังเกตเห็น) ภาษาลื่นไหลเป็นธรรมชาติ
+ตอบ JSON เท่านั้น: {"intro":"ย่อหน้าคั่นด้วย \\n\\n"}`);
+  const out=await callJSON({slot:'main',system:sysFor(),user,temp:.95,demo:()=>DEMO.intro(w)});
+  return String(out.intro||'').trim()||'(โมเดลไม่ได้เขียนบทเปิด — กดไปต่อได้เลย)';
+}
+
+/* ---- evaluate / feed / quests / comment ---- */
+async function evaluate(w,s,action){
+  const skills=s.skills.map((k,i)=>`${i}. ${k.name} (Lv ${skillLv(k)}) — ${k.desc}`).join('\n');
+  const vibesTxt=s.vibes.map((v,i)=>`${i}. ${v.name} (ตอนนี้ ${v.v}) — ${v.desc||''}`).join('\n');
+  const affTxt=activeChars(w,s).map(c=>`- ${c.id} ${c.name}: ${affVal(s,c.id)}`).join('\n')||'(ไม่มี)';
+  const user=J(ctxBlock(w,s,1),'=== สกิลของตัวเอก ===',skills,'=== ค่านิสัยของตัวเอก (-100..100) ===',vibesTxt,'=== ความรู้สึกของตัวละครหลักที่มีต่อตัวเอก (-100..100) ===',affTxt,'=== สิ่งที่ผู้เล่นทำ ===',actionText(action),
+`งาน: เป็นกรรมการตัดสินการเดินเรื่อง ประเมินสิ่งที่ผู้เล่นทำอย่างตรงไปตรงมา ดูว่า (1) เข้ากับตัวละครและสถานการณ์ไหม (2) ช่วยให้ขยับไปสู่เป้าหมายของช่วงเรื่องนี้ไหม (3) ฉลาด/สร้างสรรค์/กล้าแค่ไหน (4) คนในโลกจะตีความยังไงตามนิสัยของเขา
+ให้คะแนนไม่ใจดีเกินไป: เฉยๆ=3-4, ดี=6-7, ยอดเยี่ยมมาก=9-10
+vibe_delta: การเปลี่ยนของค่านิสัยตัวเอก (ตามลำดับในรายการ) เป็นจำนวนเต็ม -5..5 ตามสิ่งที่ผู้เล่นแสดงออกจริง (ปกติ 0-3 เหตุการณ์ใหญ่ถึง ±10) ไม่เปลี่ยนใส่ 0
+affinity: เฉพาะตัวละครหลักที่ "รู้เรื่อง/ได้รับผลกระทบจริง" จากเหตุการณ์นี้ delta -3..3 (ทศนิยม 1 ตำแหน่ง) เทียบกับนิสัย/สิ่งที่เขาชอบ-ไม่ชอบ (ถูกใจ=บวก ขัดใจ=ลบ -0.1 ถึง -3) คนที่ไม่เกี่ยวไม่ต้องใส่ ถ้า exposure=private ให้ใส่เฉพาะคนที่รู้จริง
+headline: 1 ประโยคสั้น (ไม่เกิน 20 คำ) น้ำเสียงเหน็บ/ขำตามโลกนี้ สรุปว่าผู้คนรู้สึกยังไงกับตัวเอกหลังเหตุการณ์นี้ (ไม่ต้องใส่ตัวเลข)
+exposure: public=คนในโลกเห็นเต็มๆ, vague=มีคนเห็น/ได้ยินแค่บางส่วน, private=ไม่มีใครรู้ (เช่น ผู้เล่นตอบแบบลับๆ ในเควส)
+${action.kind==='post'?'(โพสต์ของผู้เล่นเป็นสาธารณะ exposure ควรเป็น public เว้นแต่เนื้อหาเจาะจงคนอื่นจนคนทั่วไปไม่เข้าใจ)':''}
+ตอบ JSON เท่านั้น:
+{"verdict":"1-2 ประโยค บอกผู้เล่นว่าคนในโลกรับรู้/ตีความยังไง","score":0,"vibe_delta":[0,0],"affinity":[{"id":"","delta":0}],"headline":"","exposure":"public","feed_focus":"คำสั่งให้ผู้เขียนฟีด: รอบนี้โลกควรพูดถึงอะไร ใครรู้เรื่องอะไร/ไม่รู้อะไร ท่าทีของแต่ละฝ่าย","new_facts":[{"text":"","known_by":"all"}],"status_tags":["ป้ายสถานะสั้นๆ ของตัวเอกตอนนี้ 0-3 อัน"],"summary":"สรุปเรื่องทั้งหมดถึงตอนนี้ไม่เกิน 120 คำ","situation":"สถานการณ์ตอนนี้ 1 ประโยค","introduce":[]}`);
+  const o=await callJSON({slot:'referee',system:sysFor(),user,temp:.6,demo:()=>DEMO.eval(w,s,action)});
+  return{verdict:String(o.verdict||'—'),score:clamp(o.score,0,10),vibe_delta:[0,1,2].map(i=>{const d=Number((o.vibe_delta||[])[i]);return Number.isFinite(d)?clamp(Math.round(d),-10,10):0}),affinity:(Array.isArray(o.affinity)?o.affinity:[]).filter(a=>a&&a.id).slice(0,8).map(a=>({id:String(a.id),delta:clamp(Math.round(Number(a.delta)*10)/10,-3,3)})),headline:o.headline?String(o.headline):'',exposure:['public','vague','private'].includes(o.exposure)?o.exposure:'public',feed_focus:String(o.feed_focus||''),new_facts:Array.isArray(o.new_facts)?o.new_facts.filter(f=>f&&f.text):[],status_tags:Array.isArray(o.status_tags)?o.status_tags.map(String).slice(0,3):null,summary:o.summary?String(o.summary):null,situation:o.situation?String(o.situation):'',introduce:Array.isArray(o.introduce)?o.introduce.map(String):[]};
+}
+const expoTxt=(ev,a)=>ev.exposure==='private'?'การรับรู้: ไม่มีใครในโลกรู้เรื่องนี้ ห้ามพูดถึงตรงๆ (ใบ้จางๆ ได้เฉพาะถ้าเข้ากับตัวละคร โดยไม่เจาะจงตัวเอก)':ev.exposure==='vague'?'การรับรู้: มีคนรู้เพียงบางส่วนแบบไม่เจาะจง ให้พูดเป็นข่าวลือ/คลุมเครือ เช่น "มีใครสักคนในงาน..." ไม่ระบุชื่อตัวเอก':'การรับรู้: คนในโลกรู้เรื่องนี้ชัดเจน';
+async function genMajor(w,s,action,ev){
+  const act=activeChars(w,s);if(!act.length)return{replies_to_me:[],posts:[],thoughts:{}};
+  const isPost=action.kind==='post';
+  const user=J(ctxBlock(w,s,2),'=== เหตุการณ์รอบนี้ ===',actionText(action),expoTxt(ev,action),L('คำสั่งจากกรรมการ',ev.feed_focus),
+`งาน: จำลองความเคลื่อนไหวของ "ตัวละครหลักที่อยู่ในฉาก" ในโซเชียลหลังเหตุการณ์ข้างต้น (ผ่านไป 1 วัน) แต่ละคนทำตามนิสัยจริงและสิ่งที่ตัวเองรู้ ไม่จำเป็นต้องเกี่ยวกับตัวเอก
+- replies_to_me: ${isPost?'คอมเมนต์ใต้โพสต์ของผู้เล่น 2-5 อันจากตัวละครหลักที่จะตอบจริงๆ ตามนิสัย (แสร้ง/แซะ/เมิน/ด่า/ปกป้อง) และให้ "เถียงกันเอง" ได้สุดเหวี่ยงตามนิสัย โดยใส่ to = ลำดับ (นับจาก 1) ของคอมเมนต์ก่อนหน้าในลิสต์นี้ที่กำลังตอบโต้ (0 = ตอบโพสต์ตรงๆ)':'ต้องเป็น [] (รอบนี้ไม่มีโพสต์ของผู้เล่น)'}
+- posts: โพสต์ใหม่ของตัวละครหลัก 2-5 โพสต์ ตามชีวิต/อารมณ์ของแต่ละคนในตอนนี้ ใช้ id ตัวละครเป็น author
+  แต่ละโพสต์ใส่ buzz: "high" = โพสต์ที่คนรุมเม้น มี replies 6-10 อัน / "low" = โพสต์ธรรมดา มี replies 2-3 อัน (ห้ามเกิน 10) replies มาจากตัวละครหลักอื่นหรือชาวเน็ต (ใช้ชื่อ/แฮนเดิล) เถียงกันเองได้ ใช้ to แบบเดียวกัน
+- บางครั้งตัวละครไม่โพสต์ลอยๆ แต่ "รีโพสต์พร้อมความเห็น" (ใส่ quote_of = id โพสต์ที่มีอยู่ในฟีดล่าสุด เช่น p12 รวมถึงโพสต์ของผู้เล่นรอบนี้ ถ้าตัวละครมีเหตุจะพูดถึง/ประชด/เสริม) ให้นับรวมในจำนวน posts ส่วน reposts = รีโพสต์เฉยๆ ไม่มีข้อความ 0-2 รายการ (ไม่บังคับ ทำเฉพาะเมื่อสมเหตุสมผล)
+- thoughts: ความคิดจริงในใจ (1-3 ประโยค ภาษาพูดดิบตรงๆ) ของตัวละครหลักทุกคนที่ปรากฏหรือได้รับผลรอบนี้ — ถ้าคนนั้นแสร้ง/ซ่อน ความคิดต้องต่างจากสิ่งที่เขาโพสต์ และห้ามรู้สิ่งที่ตัวเองไม่ควรรู้
+ตอบ JSON เท่านั้น:
+{"replies_to_me":[{"author":"id","to":0,"text":""}],"posts":[{"author":"id","text":"","quote_of":"id โพสต์ ถ้ารีโพสต์พร้อมความเห็น ไม่งั้นละไว้","image":"คำบรรยายรูป(ถ้ามี)","buzz":"low","replies":[{"author":"id หรือชื่อ","handle":"","to":0,"text":""}]}],"reposts":[{"author":"id","of":"id โพสต์"}],"thoughts":{"id":""}}`);
+  return callJSON({slot:'main',system:sysFor(),user,temp:1,demo:()=>DEMO.major(w,s,action)});
+}
+async function genCrowd(w,s,action,ev){
+  const isPost=action.kind==='post';const n=settings.crowd||6;
+  const user=J('=== โลก ===',worldBrief(w,Math.min(settings.caps.world,5000)),pgText(w,s,600),L('ช่วงเรื่อง',(s.stages[s.stageIdx]||{}).state,300),L('สรุปล่าสุด',s.summary),
+   s.facts.length?'ข้อเท็จจริงที่รู้กันแล้ว: '+s.facts.filter(f=>!f.known_by||f.known_by==='all').slice(-8).map(f=>f.text).join(' / '):'',
+   'ตัวเอก (ผู้เล่น): '+(w.player.name||'')+' (@'+(w.player.handle||w.player.name)+')','ตัวละครหลัก (ชาวเน็ตรู้จัก): '+activeChars(w,s).map(c=>`${c.name}(${c.role||''})`).join(', '),
+   s.crowd.length?'ชาวเน็ตประจำ (ใช้ซ้ำได้):\n'+s.crowd.slice(-20).map(x=>`- ${x.name} (@${x.handle}): ${x.persona||''}`).join('\n'):'(ยังไม่มีชาวเน็ตประจำ ให้สร้างใหม่ มีชื่อ/แฮนเดิลเข้ากับโลกนี้)',
+   '=== ฟีดล่าสุด ===',recentFeed(w,s,8),'=== เหตุการณ์รอบนี้ ===',actionText(action,800),expoTxt(ev,action),L('คำสั่งจากกรรมการ',ev.feed_focus),
+`งาน: เขียนความเคลื่อนไหวของ "ชาวเน็ตทั่วไป" (ไม่ใช่ตัวละครหลัก) ในโลกนี้ ผ่านไป 1 วัน
+- posts: ${n} โพสต์ จากชาวเน็ตหลายคน (ผสมคนเดิม/คนใหม่) ประมาณ 1 ใน 3 พูดถึงเหตุการณ์ข้างต้นหรือถามว่า "เกิดอะไรขึ้น" (ตามระดับการรับรู้) ที่เหลือบ่น/ขิง/เม้าท์เรื่องทั่วไปของโลกนี้ตามสิ่งที่ชาวเน็ตสนใจ แต่ละคนมีนิสัยและสำนวนต่างกัน
+  แต่ละโพสต์ใส่ buzz: "high" = โพสต์ดัง คนรุมเม้น replies 6-10 อัน (มีคนเถียงกัน/ทะเลาะกันเองสุดเหวี่ยง) / "low" = โพสต์ธรรมดา replies 2-3 อัน ห้ามเกิน 10 มี buzz "high" ประมาณ 1-2 โพสต์ ใช้ to = ลำดับ (นับจาก 1) ของคอมเมนต์ก่อนหน้าในโพสต์เดียวกันที่ตอบโต้ (0 = ตอบโพสต์ตรงๆ)
+- replies_to_me: ${isPost&&ev.exposure!=='private'?'คอมเมนต์ใต้โพสต์ของผู้เล่น 3-5 อัน (เชียร์ ซุบซิบ ถาม แซะ) และให้บางคนเถียงกันเองโดยใช้ to แบบเดียวกัน':'ต้องเป็น []'}
+- ใส่ persona (วลีสั้นๆ บอกนิสัยชาวเน็ตคนนั้น) ทุกครั้ง
+ตอบ JSON เท่านั้น:
+{"replies_to_me":[{"name":"","handle":"","persona":"","to":0,"text":""}],"posts":[{"name":"","handle":"","persona":"","text":"","image":"คำบรรยายรูป(ถ้ามี)","buzz":"low","replies":[{"name":"","handle":"","to":0,"text":""}]}]}`);
+  return callJSON({slot:'npc',system:sysFor(),user,temp:1,demo:()=>DEMO.crowd(w,s,action)});
+}
+async function genQuests(w,s){
+  const user=J(ctxBlock(w,s,1,{worldCap:5000}),
+`งาน: สร้าง "เควสสถานการณ์ในชีวิตจริง" 5 อันให้ผู้เล่นเลือกตอบ 1 อัน (สถานการณ์เจาะจงตัวละคร/โลกนี้ ไม่ใช่สถานการณ์ทั่วไป)
+- ผสมหลายแบบ: คนที่ไม่ชอบตัวเอกวางแผนทำให้อับอาย / โอกาสให้เอาคืนหรือสร้างภาพลักษณ์ / เหตุการณ์ในโซเชียลที่ลามมาชีวิตจริง / เรื่องราวที่ช่วยให้ตัวเอกเข้าใกล้เป้าหมายของช่วงนี้ / เรื่องสุ่มแก้เบื่อ
+- ต้องไม่เฉลยความลับที่ตัวเอกยังไม่รู้ และต้องเหมาะกับช่วงเรื่องตอนนี้
+- situation 2-4 ประโยค เล่าบริบท จบด้วยคำถามว่าตัวเอกจะทำอย่างไร
+ตอบ JSON เท่านั้น: {"quests":[{"title":"ชื่อสั้นๆ","situation":""}]}`);
+  const o=await callJSON({slot:'referee',system:sysFor(),user,temp:1,demo:()=>DEMO.quests(w,s)});
+  const q=(o.quests||[]).filter(x=>x&&x.situation).slice(0,5).map(x=>({id:uid('q'),title:String(x.title||'เควส'),situation:String(x.situation),done:false}));
+  if(!q.length)throw new Error('ไม่ได้เควส');return q;
+}
+function commentSlot(w,post){const keys=[post.author,...post.replies.map(r=>r.author)];return keys.some(k=>w.chars.some(c=>c.id===k))?'main':'npc'}
+async function genComment(w,s,post,mine){
+  const keys=new Set([post.author,...post.replies.map(r=>r.author)]);
+  const focus=w.chars.filter(c=>keys.has(c.id)).map(c=>c.id);
+  const slot=commentSlot(w,post);
+  const rs=post.replies.slice(-24);
+  const thread=`[โพสต์] ${entName(w,s,post.author)}: ${post.text}${post.caption?` (รูป: ${post.caption})`:''}\n`+rs.map(r=>`  [${r.id}] ${entName(w,s,r.author)}${r.to?` (ตอบ [${r.to}])`:''}: ${trunc(r.text,300)}`).join('\n');
+  const user=J(ctxBlock(w,s,1,{worldCap:4000,focus}),'=== เธรดที่ผู้เล่นเพิ่งคอมเมนต์ ===',thread,
+`งาน: ผู้เล่น (id=me) เพิ่งเขียนคอมเมนต์ [${mine.id}] ${mine.to?`ตอบคอมเมนต์ [${mine.to}]`:'ตอบโพสต์โดยตรง'} ให้เขียนคอมเมนต์ที่ตามมาจากคนในเธรด/คนผ่านมา 2-5 อัน ตามนิสัยและสิ่งที่แต่ละคนรู้ คนที่ถูกตอบโดยตรงมีแนวโน้มตอบกลับ ส่วนคนอื่นอาจเข้ามาเถียงกันเองสุดเหวี่ยงได้ตามนิสัย
+- to = id คอมเมนต์ที่กำลังตอบ (เช่น "r12" ใช้ "${mine.id}" ถ้าตอบผู้เล่น) หรือ "" ถ้าตอบโพสต์ตรงๆ
+- ใช้ id สำหรับตัวละครหลัก หรือ name/handle สำหรับชาวเน็ต
+- thoughts (ไม่บังคับ): ความคิดจริงในใจของตัวละครหลักที่เกี่ยวข้อง 1-2 ประโยค
+ตอบ JSON เท่านั้น: {"replies":[{"author":"id หรือชื่อ","handle":"","persona":"","to":"","text":""}],"thoughts":{"id":""}}`);
+  return callJSON({slot,system:sysFor(),user,temp:1,demo:()=>DEMO.comment(w,s,post)});
+}
+
+/* ================= demo (no AI) ================= */
+const DEMO={
+ plan(w){const n=[20,40,60,80,100];const t=['ยังไม่รู้ตัว','เริ่มสังเกต','ตระหนัก','ลงมือ','ปิดฉาก'];return{skills:[{name:'ความกล้าแสดงออก',desc:'โพสต์และยืนหยัดในความรู้สึกตัวเอง',tiers:['พิมพ์แล้วลบ','โพสต์ได้แต่มือสั่น','กล้าพอจะโดนด่า','ไม่ถอยแม้โดนรุม']},{name:'การอ่านคน',desc:'มองออกว่าใครจริงใจใครแสร้ง',tiers:['เชื่อทุกคน','เริ่มสงสัยบ้าง','จับโกหกได้บางครั้ง','อ่านขาดทะลุ']},{name:'ตั้งหลักหลังโดนด่า',desc:'ทนแรงกระแทกโดยไม่เสียศูนย์',tiers:['แตกง่ายเหมือนแก้ว','ร้องไห้แล้วลุก','หน้าด้านขึ้นเยอะ','ใจเหล็ก']}],vibes:[{name:'ตลก',desc:'มุกและความขำ'},{name:'ออร่า',desc:'บารมี'}],stages:n.map((l,i)=>({title:'[ทดสอบ] ช่วง '+(i+1)+': '+t[i],state:'ข้อความสำเร็จรูปสำหรับทดสอบระบบ ช่วงที่ '+(i+1),note:'NPC ทำตัวตามช่วง '+(i+1),level_to:l,gate:i<4?[{skill:0,level:2+i},{skill:1,level:2+i}]:[],introduces:[]})),first_post_hint:'(โหมดทดสอบ) ลองโพสต์อะไรก็ได้สั้นๆ เพื่อดูว่าฟีดเด้งตามที่คาดไหม — เช่นโพสต์บ่นเรื่องวันนี้ตามนิสัยตัวละครของคุณ'}},
+ intro(w){return{intro:'[โหมดทดสอบ — ไม่ได้ใช้ AI]\n\nนี่คือบทเปิดเรื่องสำเร็จรูป ใน "'+(w.name||'โลกของคุณ')+'" คุณคือ '+(w.player.name||'ตัวเอก')+'\n\n'+trunc(w.premise,300)+'\n\nเมื่อใส่คีย์ AI ในหน้าตั้งค่า บทเปิดตรงนี้จะถูกเขียนใหม่ให้เข้ากับตัวละครและสถานการณ์ที่คุณตั้งไว้\n\nคุณเปิดโซเชียลขึ้นมา...'}},
+ eval(w,s,a){const sc=rand(3,9);return{verdict:'[ทดสอบ] ผลสำเร็จรูป: คะแนน '+sc+'/10',score:sc,vibe_delta:[rand(-3,4),rand(-3,4),0],affinity:shuffle(activeChars(w,s)).slice(0,2).map(c=>({id:c.id,delta:Math.round((Math.random()*5-2)*10)/10})),headline:'[ทดสอบ] ชาวเน็ตเริ่มพูดถึงคุณมากขึ้น',exposure:a.kind==='quest'&&Math.random()<.4?'private':'public',feed_focus:'ให้โลกพูดถึงเหตุการณ์ตามสมควร',new_facts:[{text:'ตัวเอกทำเรื่อง: '+trunc(a.text,60),known_by:'all'}],status_tags:sc>7?['กำลังมาแรง']:sc<5?['โดนจับตา']:[],summary:'(ทดสอบ) ตัวเอกกำลังเดินเรื่องในช่วงที่ '+(s.stageIdx+1),situation:'(ทดสอบ) สถานการณ์ตอนนี้ยังดำเนินอยู่',introduce:[]}},
+ major(w,s,a){const act=activeChars(w,s);const ch=shuffle(act).slice(0,3);return{replies_to_me:a.kind==='post'?ch.slice(0,2).map(c=>({author:c.id,text:pick(['เห็นโพสต์แล้วนะ 🙂','อ่านแล้วอึ้งไปเลย','อืมมม','พูดตรงๆ ไม่ค่อยเห็นด้วย'])+' [ทดสอบ]'})):[],posts:ch.map((c,i)=>({author:c.id,text:pick(['วันนี้เหนื่อยจัง','ใครรู้เรื่องที่ลือกันบ้าง','ไม่พูดอะไรละ แต่ก็อยากพูด'])+' [ทดสอบ]',image:Math.random()<.3?'รูปบรรยากาศวันนี้':'',quote_of:i===0&&s.posts.length?s.posts[s.posts.length-1].id:'',replies:[]})),reposts:ch[1]&&s.posts.length?[{author:ch[1].id,of:s.posts[0].id}]:[],thoughts:Object.fromEntries(act.map(c=>[c.id,'(ทดสอบ) ความคิดในใจของ '+c.name+': ...ไม่รู้ว่าควรพูดยังไงดี']))}},
+ crowd(w,s,a){const names=[['มะนาวโซดา','manao_soda','ขี้เม้าท์'],['ลุงเฟิร์น','lung_fern','บ่นเก่ง'],['น้องพริก','nong_prik','ตามกระแส']];return{replies_to_me:a.kind==='post'?[{name:'มะนาวโซดา',handle:'manao_soda',persona:'ขี้เม้าท์',text:'เกิดอะไรขึ้นคะเนี่ย [ทดสอบ]'}]:[],posts:names.map(n=>({name:n[0],handle:n[1],persona:n[2],text:pick(['วันนี้ฝนตกอีกแล้ว','ราคาของแพงขึ้นอีกละ','เมื่อกี้เห็นอะไรมา ไม่เล่าดีกว่า'])+' [ทดสอบ]',likes:rand(0,30),replies:[]}))}},
+ quests(w,s){const c=activeChars(w,s);const nm=i=>c.length?c[i%c.length].name:'ใครสักคน';return{quests:[0,1,2,3,4].map(i=>({title:'[ทดสอบ] สถานการณ์ '+(i+1),situation:nm(i)+' ชวนคุณไปงานแห่งหนึ่ง และมีแววว่าจะทำให้คุณอับอายต่อหน้าคนอื่น คุณจะทำยังไง?'}))}},
+ comment(w,s,p){return{replies:[{author:p.author==='me'?'manao_soda':p.author,persona:'',text:pick(['จริงค่ะ','ว่าไงนะ?','555'])+' [ทดสอบ]'}],thoughts:{}}}
+};
+
+/* ================= game logic ================= */
+function resolveAuthor(w,s,raw,extra={}){
+  if(raw==null||raw==='')raw=extra.name||extra.handle;if(!raw)return null;
+  raw=String(raw).trim();if(raw==='me')return null;
+  const lc=raw.toLowerCase().replace(/^@/,'');
+  const p=w.player;if((p.name||'').toLowerCase()===lc||(p.handle||'').toLowerCase()===lc)return null;
+  const c=w.chars.find(c=>c.id===raw)||w.chars.find(c=>(c.name||'').toLowerCase()===lc||(c.handle||'').toLowerCase()===lc);
+  if(c)return isActive(s,c)?c.id:null;
+  const nm=(extra.name||raw).trim();const handle=String(extra.handle||raw).replace(/^@/,'').replace(/\s+/g,'_');
+  let x=s.crowd.find(x=>x.handle.toLowerCase()===handle.toLowerCase())||s.crowd.find(x=>x.name===nm);
+  if(!x){x={name:nm,handle,persona:extra.persona||''};s.crowd.push(x);if(s.crowd.length>40)s.crowd.shift()}
+  else if(extra.persona&&!x.persona)x.persona=extra.persona;
+  return 'x:'+x.handle;
+}
+const FAME_RANGE={1:[0,12],2:[4,45],3:[15,160],4:[50,700],5:[200,3000]};
+function genCounts(fame,high){const r=FAME_RANGE[clamp(fame,1,5)]||FAME_RANGE[2];let likes=rand(r[0],r[1]);if(high)likes=Math.round(likes*rand(20,40)/10+rand(10,60));const rt=Math.round(likes*(high?rand(12,30):rand(3,18))/100);return{likes,rt}}
+function playerFame(s,w){return s.followers!=null?starsFromFol(s.followers):clamp(Number(w.player.fame)||1,1,5)}
+function fameOf(w,s,key){if(key==='me')return playerFame(s,w);if(String(key).startsWith('x:'))return 2;return Number((w.chars.find(c=>c.id===key)||{}).fame)||3}
+function growCounts(s){s.posts.forEach(p=>{const ago=s.turn-p.turn;if(ago<1||ago>3)return;const f=ago===1?.35:ago===2?.15:.06;const g=Math.round(p.likes*f*rand(30,100)/100);p.likes+=g;p.rt=(p.rt||0)+Math.round(g*rand(5,20)/100)})}
+function mkPost(s,o){const n=++s.seq;return{id:'p'+n,author:o.author,text:String(o.text||'').trim(),image:o.image||'',caption:o.caption||'',likes:Math.max(0,Math.round(Number(o.likes))||0),rt:Math.max(0,Math.round(Number(o.rt))||0),replies:[],day:s.day,clock:clock(),turn:s.turn,ord:s.turn*1000+(o.author==='me'?900:rand(0,800)),mine:o.author==='me'}}
+function addReply(s,post,author,text,to){if(!text||!String(text).trim())return null;const r={id:'r'+(++s.seq),author,text:String(text).trim(),to:to||null};post.replies.push(r);return r}
+function addNotif(s,o){s.notifs.unshift({id:uid('n'),read:false,day:s.day,...o});if(s.notifs.length>80)s.notifs.length=80}
+const gateOK=(s,st)=>(st.gate||[]).every(g=>s.skills[g.skill]&&skillLv(s.skills[g.skill])>=g.level);
+function recompute(s){
+  const raw=levelFromXp(s.exp);let advanced=[];
+  s.rawLv=s.rawLv||1;while(s.rawLv<raw){s.rawLv++;s.skillPts=(s.skillPts||0)+2+(Math.random()<.5?1:0)}
+  for(;;){
+    const st=s.stages[s.stageIdx];const last=s.stageIdx>=s.stages.length-1;
+    if(last){s.level=raw;s.capped=false;if(raw>=100)s.completed=true;break}
+    if(raw>=st.level_to&&gateOK(s,st)){s.stageIdx++;advanced.push(s.stageIdx);(s.stages[s.stageIdx].introduces||[]).forEach(id=>s.unlocked[id]=true);continue}
+    s.level=Math.min(raw,st.level_to);s.capped=raw>=st.level_to;break;
+  }
+  return advanced;
+}
+function applyFeed(w,s,action,postRef,major,crowd){
+  const newPosts=[];const MAXR=10;
+  const mentionRe=new RegExp((w.player.handle?'@'+w.player.handle.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+'|':'')+(w.player.name?w.player.name.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'):'§§'),'i');
+  const addList=(post,arr,notifyMe)=>{
+    const ids=[];
+    (Array.isArray(arr)?arr:[]).forEach(r=>{
+      if(!r||!r.text||post.replies.length>=MAXR){ids.push(null);return}
+      const a=resolveAuthor(w,s,r.author||r.handle||r.name,r);if(!a){ids.push(null);return}
+      const ti=Math.floor(Number(r.to))||0;const toId=ti>0&&ti<=ids.length?ids[ti-1]:null;
+      const rr=addReply(s,post,a,r.text,toId);ids.push(rr?rr.id:null);
+      if(rr&&notifyMe)addNotif(s,{type:'reply',author:a,text:r.text,postId:post.id});
+    });
+  };
+  const handlePosts=(arr)=>(Array.isArray(arr)?arr:[]).forEach(o=>{
+    if(!o||!o.text)return;const a=resolveAuthor(w,s,o.author||o.handle||o.name,o);if(!a)return;
+    const high=o.buzz==='high';const cn=genCounts(fameOf(w,s,a),high);
+    const p=mkPost(s,{author:a,text:o.text,caption:o.image,likes:cn.likes,rt:cn.rt});p.buzz=high?'high':'low';
+    if(o.quote_of){const orig=s.posts.find(x=>x.id===String(o.quote_of).trim()&&!x.repostOf);if(orig&&orig.author!==a){p.quoteOf=orig.id;orig.rt=(orig.rt||0)+1}}
+    addList(p,o.replies,false);
+    s.posts.push(p);newPosts.push(p);
+    if(mentionRe.test(p.text))addNotif(s,{type:'mention',author:a,text:p.text,postId:p.id});
+  });
+  if(action.kind==='post'&&postRef){addList(postRef,major&&major.replies_to_me,true);addList(postRef,crowd&&crowd.replies_to_me,true)}
+  handlePosts(major&&major.posts);handlePosts(crowd&&crowd.posts);
+  (Array.isArray(major&&major.reposts)?major.reposts:[]).slice(0,3).forEach(o=>{
+    if(!o)return;const a=resolveAuthor(w,s,o.author,o);const orig=s.posts.find(x=>x.id===String(o.of||'').trim()&&!x.repostOf);
+    if(!a||!orig||orig.author===a||s.posts.some(x=>x.repostOf===orig.id&&x.author===a))return;
+    const p=mkPost(s,{author:a,text:'',likes:0,rt:0});p.repostOf=orig.id;orig.rt=(orig.rt||0)+1;s.posts.push(p);newPosts.push(p)});
+  if(major&&major.thoughts&&typeof major.thoughts==='object')for(const[k,v]of Object.entries(major.thoughts)){const c=w.chars.find(c=>c.id===k)||w.chars.find(c=>c.name===k);if(c&&v&&isActive(s,c))s.thoughts[c.id]={text:String(v),day:s.day}}
+  return newPosts;
+}
+async function doTurn(action){
+  if(ui.busy)return false;const w=curWorld(),s=curSave();
+  if(!(await quotaGate({referee:1.3,main:1,npc:1})))return false;
+  turnTokens=0;
+  showBusy(action.kind==='post'?'กำลังโพสต์…':'กำลังดูว่าเกิดอะไรขึ้น…');ui.busy=true;
+  try{
+    const ev=await evaluate(w,s,action);
+    const prevLevel=s.level,prevStage=s.stageIdx,ptsBefore=s.skillPts||0;
+    const fg=calcFollowers(s,ev,action);
+    const affCh=[];ev.affinity.forEach(a=>{const c=w.chars.find(c=>c.id===a.id)||w.chars.find(c=>(c.name||'').toLowerCase()===a.id.toLowerCase());if(!c||!isActive(s,c)||Math.abs(a.delta)<.1)return;const old=affVal(s,c.id);const nv=clamp(Math.round((old+a.delta)*10)/10,-100,100);s.aff=s.aff||{};s.aff[c.id]=nv;const ex=affCh.find(x=>x.id===c.id);if(ex){ex.d=Math.round((ex.d+nv-old)*10)/10;ex.v=nv}else affCh.push({id:c.id,d:Math.round((nv-old)*10)/10,v:nv})});
+    const xpC=calcXP(s,ev,action,fg,affCh);const expGain=xpC.xp;s.exp+=expGain;
+    s.followers=Math.max(0,Math.round((s.followers||0)+fg));
+    const vibeCh=s.vibes.map((v,i)=>{const old=v.v;v.v=clamp(old+(ev.vibe_delta[i]||0),-100,100);return{name:v.name,d:v.v-old,v:v.v}});
+    ev.introduce.forEach(id=>{const c=w.chars.find(c=>c.id===id);if(c)s.unlocked[c.id]=true});
+    const adv=recompute(s);const levelUp=s.level>prevLevel;const ptsGain=(s.skillPts||0)-ptsBefore;
+    ev.new_facts.forEach(f=>s.facts.push({text:String(f.text),known_by:f.known_by||'all',day:s.day}));if(s.facts.length>60)s.facts.splice(0,s.facts.length-60);
+    if(ev.status_tags)s.status=ev.status_tags;if(ev.summary)s.summary=ev.summary;if(ev.situation)s.situation=ev.situation;
+    s.turn++;growCounts(s);Object.keys(s.npcFol||{}).forEach(k=>{s.npcFol[k]=Math.round(s.npcFol[k]*(1+rand(0,8)/1000))});
+    let postRef=null;
+    if(action.kind==='post'){const pc=genCounts(playerFame(s,w,ev.score),ev.score>=8);postRef=mkPost(s,{author:'me',text:action.text,image:action.image,caption:action.caption,likes:pc.likes,rt:pc.rt});postRef.buzz=ev.score>=8?'high':'low';s.posts.push(postRef)}
+    else{s.questsDone[action.quest.id]=true;const q=s.quests.find(q=>q.id===action.quest.id);if(q)q.done=true}
+    const needQ=!s.quests.length||levelUp||adv.length||s.quests.every(q=>q.done);
+    showBusy('ชาวบ้านกำลังพิมพ์…');
+    const [mj,cr,qs]=await Promise.allSettled([genMajor(w,s,action,ev),genCrowd(w,s,action,ev),needQ?genQuests(w,s):Promise.resolve(null)]);
+    const warn=[];
+    if(mj.status==='rejected')warn.push('ตัวหลัก: '+mj.reason.message);
+    if(cr.status==='rejected')warn.push('NPC: '+cr.reason.message);
+    applyFeed(w,s,action,postRef,mj.value,cr.value);
+    if(needQ){if(qs.status==='fulfilled'&&qs.value){s.quests=qs.value;s.questsNew=true}else if(qs.status==='rejected'){warn.push('เควส: '+qs.reason.message);if(s.quests.every(q=>q.done))s.quests=[]}}
+    s.log.unshift({day:s.day,kind:action.kind,text:action.kind==='post'?trunc(action.text,60):'เควส: '+action.quest.title,verdict:ev.verdict,exp:expGain,skillGain:[]});if(s.log.length>30)s.log.length=30;
+    s.day++;
+    s.lastResult={verdict:ev.verdict,headline:ev.headline,score:ev.score,exp:expGain,xpParts:xpC,fg,followers:s.followers,vibes:vibeCh,aff:affCh,ptsGain,levelUp,level:s.level,stageAdvanced:adv.length?s.stages[s.stageIdx].title:null,capped:s.capped,exposure:ev.exposure,warn,kind:action.kind,tokens:turnTokens};
+    persistSaves();hideBusy();ui.busy=false;
+    ui.modal=null;ui.banner=true;ui.bannerAnim=true;
+    if(warn.length)toast('บางส่วนล้มเหลว (เกมเดินต่อได้):\n'+warn.join('\n'),'err',9000);
+    return true;
+  }catch(e){
+    hideBusy();ui.busy=false;console.error(e);toast('ทำไม่สำเร็จ: '+e.message+'\n(ข้อความที่พิมพ์ยังอยู่ ลองกดอีกครั้ง หรือเช็กหน้าตั้งค่า)','err',9000);return false;
+  }
+}
+async function doComment(postId,text,toId){
+  const w=curWorld(),s=curSave();const post=s.posts.find(p=>p.id===postId);if(!post)return;
+  if(post.replies.length>=40)return toast('เธรดนี้ยาวมากแล้ว (40 เม้น)','err');
+  if(!(await quotaGate({[commentSlot(w,post)]:1})))return;
+  const mine=addReply(s,post,'me',text,toId||null);ui.typing=postId;ui.commentText='';ui.replyTo=null;persistSaves();render();
+  try{
+    const o=await genComment(w,s,post,mine);
+    const myIds=new Set(post.replies.filter(r=>r.author==='me').map(r=>r.id));
+    (Array.isArray(o.replies)?o.replies:[]).slice(0,6).forEach(r=>{
+      if(!r||!r.text)return;const a=resolveAuthor(w,s,r.author||r.handle||r.name,r);if(!a)return;
+      const raw=String(r.to||'').trim();let to=null;if(raw==='me')to=mine.id;else if(post.replies.some(x=>x.id===raw))to=raw;
+      const rr=addReply(s,post,a,r.text,to);
+      if(rr&&(post.author==='me'||(to&&myIds.has(to))))addNotif(s,{type:'reply',author:a,text:r.text,postId:post.id});
+    });
+    if(o.thoughts&&typeof o.thoughts==='object')for(const[k,v]of Object.entries(o.thoughts)){const c=w.chars.find(c=>c.id===k||c.name===k);if(c&&v&&isActive(s,c))s.thoughts[c.id]={text:String(v),day:s.day}}
+  }catch(e){toast('เม้นแล้ว แต่ไม่มีใครตอบ: '+e.message,'err',7000)}
+  ui.typing=null;persistSaves();render();
+}
+async function beginNewGame(worldId){
+  const w=worlds.find(x=>x.id===worldId);if(!w)return;
+  if(!w.name.trim()||!w.premise.trim()||!w.player.name.trim()){toast('ต้องมีอย่างน้อย: ชื่อโลก, สถานการณ์เริ่มต้น, ชื่อตัวเอก','err');return}
+  if(!w.chars.length&&!confirm('ยังไม่มีตัวละครหลักเลย (จะมีแต่ชาวเน็ตทั่วไป) เริ่มต่อไหม?'))return;
+  const s={id:uid('s'),worldId,created:Date.now(),phase:'intro',day:1,turn:0,exp:0,level:1,rawLv:1,skillPts:0,followers:START_FOL[clamp(w.player.fame||1,1,5)],vibes:[],aff:{},npcFol:{},v:2,capped:false,completed:false,skills:[],stages:[],stageIdx:0,intro:'',hint:'',summary:'',situation:'',facts:[],posts:[],seq:0,crowd:[],notifs:[],thoughts:{},quests:[],questsDone:{},status:[],unlocked:{},playerNote:'',goal:'',log:[],lastResult:null};
+  if(!(await quotaGate({referee:1,main:1})))return;
+  showBusy('กำลังสร้างโลก…','วางโครงเรื่อง สกิล และเขียนบทเปิด (อาจใช้เวลาครึ่งนาที)');ui.busy=true;
+  try{
+    const [plan,intro]=await Promise.all([genPlan(w,s,false),genIntro(w,s)]);
+    s.skills=plan.skills;s.vibes=plan.vibes;s.stages=plan.stages;s.hint=plan.hint;s.intro=intro;
+    (s.stages[0].introduces||[]).forEach(id=>s.unlocked[id]=true);
+    saves.push(s);persistSaves();hideBusy();ui.busy=false;
+    ui.worldId=w.id;ui.saveId=s.id;ui.screen='intro';ui.firstText='';render();
+  }catch(e){hideBusy();ui.busy=false;console.error(e);toast('สร้างโลกไม่สำเร็จ: '+e.message+'\nเช็กหน้า ⚙ ตั้งค่า AI แล้วลองใหม่','err',9000)}
+}
+async function setNewGoal(text){
+  const w=curWorld(),s=curSave();if(!text.trim())return toast('ใส่เป้าหมายใหม่ก่อน','err');
+  showBusy('กำลังวางโครงเรื่องบทใหม่…');ui.busy=true;
+  try{
+    const old=s.goal||w.goal;s.goal=text.trim();s.summary=(s.summary?s.summary+' ':'')+'[จบบทก่อนหน้า: บรรลุเป้าหมาย "'+trunc(old,80)+'"]';
+    const plan=await genPlan(w,s,true);
+    s.stages=plan.stages;s.stageIdx=0;s.exp=0;s.level=1;s.capped=false;s.completed=false;s.rawLv=1;s.skills.forEach(k=>{const h=Math.floor((k.pts||0)/2);s.skillPts=(s.skillPts||0)+((k.pts||0)-h);k.pts=h});
+    s.unlocked={};(s.stages[0].introduces||[]).forEach(id=>s.unlocked[id]=true);
+    s.quests=[];try{s.quests=await genQuests(w,s)}catch{}
+    persistSaves();hideBusy();ui.busy=false;ui.tab='progress';toast('เริ่มบทใหม่แล้ว','ok');render();
+  }catch(e){hideBusy();ui.busy=false;toast('ไม่สำเร็จ: '+e.message,'err',8000)}
+}
+
+/* ================= busy overlay ================= */
+const BUSY_LINES=['กำลังหมุนโลก…','ชาวบ้านกำลังพิมพ์…','มีคนแอบอ่านอยู่…','บางคนกำลังพิมพ์แล้วลบ…','ข่าวลือกำลังแพร่…','มีคนกดไลก์แล้วยกเลิก…'];
+let busyTimer=null;
+function showBusy(msg,sub=''){$('#busy').classList.add('on');$('#busyMsg').textContent=msg;$('#busySub').textContent=sub;clearInterval(busyTimer);if(!sub){let i=0;busyTimer=setInterval(()=>{$('#busySub').textContent=BUSY_LINES[i++%BUSY_LINES.length]},2200)}}
+function hideBusy(){clearInterval(busyTimer);$('#busy').classList.remove('on')}
+
+/* ================= views ================= */
+function av(e,size=40){
+  const letter=esc((e.name||'?').trim().slice(0,1).toUpperCase());
+  let src=e.avatar||(settings.dicebear?`https://api.dicebear.com/9.x/thumbs/svg?seed=${encodeURIComponent((e.handle||e.name||'x')+(e.id||''))}`:'');
+  return `<span class="av" data-act="profile" data-key="${esc(e.id||'')}" style="width:${size}px;height:${size}px;font-size:${size*.42}px">${letter}${src?`<img src="${esc(src)}" alt="" loading="lazy" onerror="this.remove()">`:''}</span>`;
+}
+function viewHome(){
+  const warnDemo=['main','npc','referee'].every(k=>settings.slots[k].preset==='demo');
+  return `<div class="pad"><div class="row"><div class="grow"><h1>🐦 โลกโซเชียลจำลอง</h1><div class="mute sm">เกมเล่นคนเดียว — ตั้งโลก ตั้งตัวละคร แล้วโพสต์ให้โลกขยับ</div></div><button class="icon" data-act="goSettings" title="ตั้งค่า AI">⚙</button></div></div>
+  ${warnDemo?`<div class="warn">ตอนนี้ยังเป็น <b>โหมดทดสอบ (ไม่ใช้ AI)</b> — ข้อความในฟีดจะเป็นข้อความสำเร็จรูป ไปที่ ⚙ ตั้งค่า เพื่อใส่คีย์ Gemini / Groq / OpenRouter ฯลฯ</div>`:''}
+  <div class="row wrap gap" style="padding:0 14px"><button class="btn pri" data-act="newWorld">＋ สร้างโลกใหม่</button><button class="btn" data-act="importWorld">⬆ นำเข้าโลก</button></div>
+  ${worlds.length?worlds.map(w=>{const ss=saves.filter(x=>x.worldId===w.id);return `<div class="card"><b>${esc(w.name||'(ไม่มีชื่อ)')}</b><div class="mute sm">เล่นเป็น ${esc(w.player.name||'-')} · ตัวละครหลัก ${w.chars.length} คน${w.setting.genre?' · '+esc(trunc(w.setting.genre,40)):''}</div>
+   ${ss.map(x=>`<div class="saverow"><div class="grow sm">${x.completed?'✅ ':''}Lv ${x.level} · วันที่ ${x.day}${x.phase!=='play'?' · <span class="mute">(ยังไม่เริ่มโพสต์)</span>':''}</div><button class="btn sm pri" data-act="continue" data-id="${x.id}">เล่นต่อ</button><button class="btn sm dng" data-act="delSave" data-id="${x.id}">ลบเซฟ</button></div>`).join('')}
+   <div class="row wrap gap" style="margin-top:10px"><button class="btn pri" data-act="newGame" data-id="${w.id}">▶ เริ่มเกมใหม่</button><button class="btn" data-act="editWorld" data-id="${w.id}">✏ แก้ไขโลก</button><button class="btn" data-act="exportWorld" data-id="${w.id}">⬇ ส่งออก</button><button class="btn dng" data-act="delWorld" data-id="${w.id}">🗑</button></div></div>`}).join(''):`<div class="card center mute">ยังไม่มีโลก — กด "สร้างโลกใหม่"</div>`}`;
+}
+const fld=(label,path,o={})=>{const v=getPath(ui.draft,path)??'';const c=`data-root="draft" data-b="${path}" placeholder="${esc(o.ph||'')}"`;return `<label class="fld"><span>${label}</span>${o.hint?`<small>${o.hint}</small>`:''}${o.ta?`<textarea class="inp" rows="${o.rows||3}" ${c}>${esc(v)}</textarea>`:`<input class="inp" ${c} value="${esc(v)}">`}</label>`};
+function charFields(p,isP){
+  return `<div class="row" style="margin:6px 0"><span class="av" style="width:56px;height:56px;font-size:22px" id="avprev-${esc(p.replace(/\./g,'-'))}">${esc((getPath(ui.draft,p+'.name')||'?').slice(0,1))}${getPath(ui.draft,p+'.avatar')?`<img src="${esc(getPath(ui.draft,p+'.avatar'))}">`:''}</span><button class="btn sm" data-act="pickAvatar" data-path="${p}.avatar">อัปโหลดรูปโปรไฟล์</button><button class="btn sm" data-act="clearAvatar" data-path="${p}.avatar">ลบรูป</button><span class="mute sm">(ไม่อัปโหลด = อวตารสุ่ม)</span></div>`
+  +fld('ชื่อ',p+'.name',{ph:'ชื่อที่แสดง'})+fld('แฮนเดิล (@)',p+'.handle',{ph:'ว่างได้ จะใช้ชื่อแทน'})
+  +(isP?'':fld('บทบาทกับตัวเอก',p+'.role',{ph:'เช่น เพื่อนสนิท / คู่แข่ง / ครอบครัว ...'}))
+  +fld('เพศ',p+'.gender')+fld('สรรพนามที่ใช้เรียกตัวละครนี้ (บุรุษที่ 3)',p+'.pronoun',{ph:'เช่น เธอ / เขา / เค้า / she-her / they-them'})+fld('สรรพนามที่ตัวละครใช้เรียกตัวเอง',p+'.selfRef',{ph:'เช่น ฉัน / ผม / เรา / หนู / I'})+fld('เพศรอง / เผ่าพันธุ์ / สถานะพิเศษ',p+'.subtype',{ph:'เช่น Alpha / Beta / Omega (ถ้าโลกนี้มี)'})
+  +`<label class="fld"><span>${isP?'ความดังตั้งต้นของเรา (กำหนดผู้ติดตามตอนเริ่ม: 1 = หลักสิบ ... 5 = หลายหมื่น)':'ความดังในโลกโซเชียล'}</span><small>มีผลกับยอดไลก์/รีโพสต์ที่สุ่มให้</small><select class="inp" data-root="draft" data-b="${p}.fame">${[1,2,3,4,5].map(n=>`<option value="${n}" ${Number(getPath(ui.draft,p+'.fame'))===n?'selected':''}>${n} · ${['ไม่มีใครรู้จัก','พอมีคนรู้จัก','รู้จักพอสมควร','ดัง','ดังมาก'][n-1]}</option>`).join('')}</select></label>`+fld('ไบโอสาธารณะ (คนอื่นเห็นในโปรไฟล์)',p+'.bio',{ta:1,rows:2})
+  +fld('หน้าตาจริง',p+'.appearance',{ta:1,rows:2})
+  +fld('นิสัยจริง',p+'.personality',{ta:1,rows:4,hint:'นิสัยข้างในที่แท้จริง ไม่ใช่แค่ที่แสดงออก'})
+  +fld('สไตล์การพิมพ์ในโซเชียล',p+'.socialStyle',{ta:1,rows:3,hint:'พิมพ์วิบัติไหม สั้น/ยาว คำลงท้าย อีโมจิ ฯลฯ'})
+  +fld('สิ่งที่ชอบ',p+'.likes',{ta:1,rows:2})+fld('สิ่งที่ไม่ชอบ',p+'.dislikes',{ta:1,rows:2})
+  +fld(isP?'นิสัยจริงตอนเจอเรื่องต่างๆ (รับมือยังไง)':'เวลาเจอสถานการณ์ต่างๆ จะรับมือยังไง / ไม่ชอบใครทำตัวยังไง',p+'.behavior',{ta:1,rows:3})
+  +fld('ปมหลัง (ยาวได้)',p+'.backstory',{ta:1,rows:6,hint:'เป็นความลับของเขา ตัวละครอื่นจะไม่รู้ เว้นแต่เรื่องเดินไปถึง'})
+  +(isP?fld('ความสัมพันธ์/ภาพลักษณ์ปัจจุบันของเรา',p+'.currentStatus',{ta:1,rows:3,hint:'เช่น คนส่วนใหญ่ไม่ชอบเรา / ถูกบูลลี่ ฯลฯ — แก้ระหว่างเล่นได้'})
+    :fld('ตัวอย่างโพสต์ของตัวละครนี้ (บรรทัดละ 1 โพสต์)',p+'.samplePosts',{ta:1,rows:3,hint:'ช่วยให้ AI เลียนสำเนียงได้ตรงมาก แนะนำ 2-3 อัน'})
+    +`<label class="row" style="margin:8px 0"><input type="checkbox" data-root="draft" data-b="${p}.late" ${getPath(ui.draft,p+'.late')?'checked':''}> <span class="sm">ยังไม่ปรากฏตัวตอนต้นเรื่อง (ให้โผล่เมื่อเรื่องเดินถึงช่วงที่เหมาะสม)</span></label>`);
+}
+const isOpen=(k,def)=>k in ui.open?ui.open[k]:def;
+function updateCounters(){
+  const d=ui.draft;if(!d)return;const C=settings.caps;
+  const wl=lenOf(d.setting,WF),pg=(d.premise||'').length+(d.goal||'').length,pl=lenOf(d.player,PF),cs=d.chars.map(c=>lenOf(c,CF));
+  const sample=[d.premise,d.goal,...WF.map(k=>d.setting[k]),...PF.map(k=>d.player[k]),...d.chars.flatMap(c=>CF.map(k=>c[k]))].join(' ');
+  const cpt=charsPerTok(sample);
+  const set=(key,n,cap,extra)=>document.querySelectorAll('[data-cnt="'+key+'"]').forEach(el=>{el.textContent=n.toLocaleString()+' / '+cap.toLocaleString()+(extra||'');el.className='cnt'+(n>cap?' over':'')});
+  set('world',wl,C.world);set('pg',pg,C.premise);set('player',pl,C.player,' (ส่ง AI ≤'+C.playerSend.toLocaleString()+')');cs.forEach((n,i)=>set('c'+i,n,C.char));
+  const ov=[wl>C.world&&'โลก',pg>C.premise&&'สถานการณ์',pl>C.player&&'ตัวเรา'].concat(cs.map((n,i)=>n>C.char&&('ตัวหลัก #'+(i+1)))).filter(Boolean);
+  const OVH=2500,min=Math.min;
+  const mainIn=min(wl,C.world)+min(pg,C.premise)+min(pl,C.playerSend)+cs.reduce((a,n)=>a+min(n,C.char),0)+OVH;
+  const refIn=min(wl,C.world)+min(pg,C.premise)+min(pl,3000)+cs.reduce((a,n)=>a+min(n,1950),0)+OVH;
+  const npcIn=min(wl,5000)+600+1500+OVH;
+  const tk=c=>Math.round(c/cpt);const main=tk(mainIn)+1500,ref=tk(refIn)+600,npc=tk(npcIn)+1500;
+  const bar=document.getElementById('cntbar');
+  if(bar)bar.innerHTML='<div class="sm">🌍 <span class="'+(wl>C.world?'over':'')+'">'+wl.toLocaleString()+'/'+C.world.toLocaleString()+'</span> · 🎯 <span class="'+(pg>C.premise?'over':'')+'">'+pg.toLocaleString()+'/'+C.premise.toLocaleString()+'</span> · 🙋 <span class="'+(pl>C.player?'over':'')+'">'+pl.toLocaleString()+'/'+C.player.toLocaleString()+'</span> · 👤 '+d.chars.length+'/10 ('+cs.map(n=>'<span class="'+(n>C.char?'over':'')+'">'+n.toLocaleString()+'</span>').join(', ')+' /'+C.char.toLocaleString()+')</div><div class="sm mute">≈ '+fmtN(main+ref+npc)+' โทเค็นต่อ 1 โพสต์ (ตัวหลัก ~'+fmtN(main)+' · กรรมการ ~'+fmtN(ref)+' · NPC ~'+fmtN(npc)+') ประมาณการ'+(ov.length?' <span class="over">· เกินเพดาน: '+ov.join(', ')+' (ส่วนเกินถูกตัดตอนส่ง AI)</span>':'')+'</div>';
+}
+function viewEditor(){
+  const d=ui.draft;
+  return `<div class="hdr" style="flex-wrap:wrap"><button class="icon" data-act="cancelEdit">←</button><div class="grow"><b>${worlds.some(w=>w.id===d.id)?'แก้ไขโลก':'สร้างโลกใหม่'}</b><div class="mute sm">บันทึกฉบับร่างอัตโนมัติขณะพิมพ์</div></div><button class="btn pri" data-act="saveWorld">บันทึก</button><div id="cntbar" style="width:100%"></div></div>
+  <details class="card" data-key="sec-world" ${isOpen('sec-world',true)?'open':''}><summary>🌍 ตั้งค่าโลก <span class="cnt" data-cnt="world"></span></summary>
+   ${fld('ชื่อโลก','name')}${fld('ชื่อแพลตฟอร์มโซเชียลในโลกนี้','setting.platform',{ph:'เช่น ชื่อเว็บ/แอปที่ชาวบ้านใช้โพสต์'})}
+   ${fld('แนวโลก','setting.genre',{ta:1,rows:2,ph:'แฟนตาซี? ยุคไหน? มีเวทมนตร์ไหม?'})}
+   ${fld('บรรยากาศ / ผู้คนทำมาหากินยังไง','setting.atmosphere',{ta:1,rows:4})}
+   ${fld('กฎหมาย / ระบบสังคม','setting.laws',{ta:1,rows:5})}
+   ${fld('ค่านิยม','setting.values',{ta:1,rows:5})}
+   ${fld('ในอินเทอร์เน็ตโลกนี้ ชาวเน็ตบ่น/สนใจเรื่องอะไรกัน','setting.topics',{ta:1,rows:6,hint:'ยิ่งยาวยิ่งดี — NPC ฉากหลังจะใช้ข้อมูลนี้โพสต์เอง'})}
+   ${fld('อื่นๆ ที่อยากให้รู้','setting.extra',{ta:1,rows:3})}</details>
+  <details class="card" data-key="sec-goal" ${isOpen('sec-goal',true)?'open':''}><summary>🎯 สถานการณ์ตั้งต้น + เป้าหมาย <span class="cnt" data-cnt="pg"></span></summary>
+   ${fld('สถานการณ์ตอนเริ่ม','premise',{ta:1,rows:5,hint:'ตัวเอกอยู่ในสถานการณ์อะไร ใครเป็นใคร (ชื่อตัวละครที่ตั้งไว้ใส่ได้)'})}
+   ${fld('เป้าหมายของตัวเอก (ทิศทางเรื่อง)','goal',{ta:1,rows:4,hint:'ที่อยากให้ค่อยๆ ไปถึง ระบบจะแตกเป็นช่วงเรื่อง/เลเวลให้เอง'})}</details>
+  <details class="card" data-key="sec-me" ${isOpen('sec-me',true)?'open':''}><summary>🙋 ตัวเรา (ผู้เล่น) <span class="cnt" data-cnt="player"></span></summary><div class="mute sm">ส่ง AI ได้ถึง ${settings.caps.playerSend.toLocaleString()} ตัวอักษร ถ้าเกินจะตัดตามลำดับ: สไตล์พิมพ์ → ชอบ/ไม่ชอบ → หน้าตา → ... เก็บ ภาพลักษณ์ปัจจุบัน + ปมหลัง ไว้นานที่สุด</div>${charFields('player',true)}</details>
+  ${d.chars.map((c,i)=>`<details class="card" data-key="${c.id}" ${isOpen(c.id,false)?'open':''}><summary>👤 ตัวหลัก #${i+1}: ${esc(c.name||'(ยังไม่ตั้งชื่อ)')}${c.role?' — '+esc(c.role):''} <span class="cnt" data-cnt="c${i}"></span></summary>${charFields('chars.'+i,false)}<button class="btn sm dng" data-act="delChar" data-i="${i}">ลบตัวละครนี้</button></details>`).join('')}
+  <div class="pad"><button class="btn" data-act="addChar" ${d.chars.length>=10?'disabled':''}>＋ เพิ่มตัวละครหลัก (${d.chars.length}/10)</button> <button class="btn pri" data-act="saveWorld">บันทึก</button></div>`;
+}
+function viewIntro(){
+  const s=curSave();const w=curWorld();
+  return `<div class="intro">${s.intro.split(/\n\s*\n/).map((p,i)=>`<p style="animation-delay:${i*.5}s">${nl(p)}</p>`).join('')}
+  <div class="card" style="margin:20px 0"><div class="mute sm">เป้าหมายของคุณ</div>${nl(s.goal||w.goal||'—')}</div>
+  <div class="center"><button class="btn pri" data-act="introNext">เปิดโซเชียล ▶</button></div></div>`;
+}
+function viewFirst(){
+  const s=curSave(),w=curWorld();const p=w.player;
+  return `<div class="hdr"><div class="grow"><b>${esc(w.setting.platform||'โซเชียล')}</b><div class="mute sm">วันที่ ${s.day}</div></div></div>
+  <div class="card"><div class="mute sm">💡 คำแนะนำจากคาแรกเตอร์ของคุณ</div><div>${nl(s.hint)}</div></div>
+  <div class="card"><div class="row top">${av(p,44)}<div class="grow"><div><b>${esc(p.name)}</b> <span class="mute">@${esc(p.handle||p.name)}</span></div>
+  <textarea class="inp" rows="5" maxlength="${settings.caps.post}" data-ui="firstText" placeholder="โพสต์แรกของคุณ…">${esc(ui.firstText)}</textarea><div class="mute sm" style="text-align:right" id="cnt-firstText">${ui.firstText.length.toLocaleString()} / ${settings.caps.post.toLocaleString()}</div>
+  <div class="row" style="margin-top:8px"><span class="mute sm grow">โพสต์แล้วฟีดจะเด้งขึ้นมา</span><button class="btn pri" data-act="submitFirst">โพสต์</button></div></div></div></div>`;
+}
+const fmtC=n=>n>=1e6?(n/1e6).toFixed(1)+'M':n>=10000?Math.round(n/1000)+'K':n>=1000?(n/1000).toFixed(1)+'K':String(n);
+function repHTML(w,s,r,post,withBtn){
+  const e=ent(w,s,r.author);const tgt=r.to?post.replies.find(x=>x.id===r.to):null;
+  return `<div class="rep">${av(e,26)}<div class="grow"><b class="sm" data-act="profile" data-key="${esc(e.id)}" style="cursor:pointer">${esc(e.name)}${r.author==='me'?' (คุณ)':''}</b>${tgt?` <span class="mute sm">↳ ${esc(ent(w,s,tgt.author).name)}</span>`:''}<div class="txt">${nl(r.text)}</div>${withBtn?`<span class="sm mute" style="cursor:pointer" data-act="replyTo" data-rid="${r.id}">↩ ตอบ</span>`:''}</div></div>`;
+}
+function quoteEmbed(w,s,id){const o=s.posts.find(x=>x.id===id);if(!o||o.repostOf)return '';const a=ent(w,s,o.author);return `<div class="quote" data-act="openThread" data-id="${o.id}"><div class="sm"><b>${esc(a.name)}</b> <span class="mute">@${esc(a.handle||a.name)}</span></div><div class="sm">${nl(trunc(o.text,220))}</div></div>`}
+function actsHTML(p,inThread){
+  return `<div class="acts"><span ${inThread?'':`data-act="openThread" data-id="${p.id}"`}>💬 ${fmtC(p.replies.length)}</span><span data-act="rtToggle" data-id="${p.id}" style="${p.reposted?'color:#00ba7c':''}">🔁 ${fmtC((p.rt||0)+(p.reposted?1:0))}</span><span data-act="like" data-id="${p.id}" style="${p.liked?'color:#f91880':''}">${p.liked?'❤':'♡'} ${fmtC(p.likes+(p.liked?1:0))}</span></div>`;
+}
+function postHead(w,s,p){
+  const a=ent(w,s,p.author);
+  return `<div class="row top">${av(a,42)}<div class="grow"><div class="who"><b data-act="profile" data-key="${esc(a.id)}">${esc(a.name)}</b> <span class="mute sm">@${esc(a.handle||a.name)} · วันที่ ${p.day} ${p.clock}${p.buzz==='high'?' · 🔥':''}</span></div>
+   <div class="txt">${nl(p.text)}</div>${p.quoteOf?quoteEmbed(w,s,p.quoteOf):''}${p.caption?`<div class="img-ph">🖼 ${esc(p.caption)}</div>`:''}${p.image?`<img class="pimg" src="${esc(p.image)}">`:''}`;
+}
+function renderPost(w,s,p,inner){
+  if(p.repostOf&&!inner){const o=s.posts.find(x=>x.id===p.repostOf);if(!o)return '';const a=ent(w,s,p.author);
+    return `<div class="rtwrap"><div class="sm mute" style="padding:8px 14px 0 66px">🔁 <b data-act="profile" data-key="${esc(a.id)}" style="cursor:pointer">${esc(a.name)}</b> รีโพสต์</div>${renderPost(w,s,o,true)}</div>`}
+  const n=p.replies.length;const prev=p.replies.slice(0,p.mine?3:2);
+  return `<article class="post ${p.mine?'mine':''} ${p.turn===s.turn&&p.turn>0?'new':''}" ${inner?'':`id="post-${p.id}"`}>
+   ${postHead(w,s,p)}
+   ${actsHTML(p,false)}
+   ${n?`<div class="reps">${prev.map(r=>repHTML(w,s,r,p,false)).join('')}${n>prev.length?`<div class="sm" style="color:var(--acc);cursor:pointer;padding:4px 0" data-act="openThread" data-id="${p.id}">ดูเม้นทั้งหมด (${n}) ›</div>`:`<div class="sm" style="color:var(--acc);cursor:pointer;padding:4px 0" data-act="openThread" data-id="${p.id}">เปิดเธรด / ตอบ ›</div>`}</div>`:''}
+   </div></div></article>`;
+}
+function starPill(w,s,key){const f=key==='me'?playerFame(s,w):fameOf(w,s,key);return `<span class="pill">ความดัง ${'★'.repeat(f)}${'☆'.repeat(5-f)}</span>`}
+function profilePosts(w,s,key){
+  const items=s.posts.filter(p=>p.author===key).sort((a,b)=>b.ord-a.ord);
+  const own=items.filter(p=>!p.repostOf);
+  const likes=own.reduce((a,p)=>a+p.likes,0),rts=own.reduce((a,p)=>a+(p.rt||0),0);
+  const list=items.slice(0,20).map(p=>{
+    if(p.repostOf){const o=s.posts.find(x=>x.id===p.repostOf);return o?`<div class="miniPost" data-act="openThread" data-id="${o.id}"><div class="sm mute">🔁 รีโพสต์ · วันที่ ${p.day}</div><div class="sm"><b>${esc(entName(w,s,o.author))}</b>: ${nl(trunc(o.text,160))}</div></div>`:''}
+    return `<div class="miniPost" data-act="openThread" data-id="${p.id}"><div class="sm mute">วันที่ ${p.day}${p.buzz==='high'?' · 🔥':''}${p.quoteOf?' · 🔁 รีโพสต์พร้อมความเห็น':''}</div><div class="sm">${nl(trunc(p.text,220))}</div>${p.quoteOf?quoteEmbed(w,s,p.quoteOf):''}<div class="sm mute" style="margin-top:2px">💬 ${fmtC(p.replies.length)} · 🔁 ${fmtC(p.rt||0)} · ♡ ${fmtC(p.likes)}</div></div>`}).join('');
+  return `<b class="sm">โพสต์</b><div class="sm mute" style="margin-bottom:4px">โพสต์ ${own.length} · ♡ รวม ${fmtC(likes)} · 🔁 รวม ${fmtC(rts)}</div>${list||'<div class="mute sm">ยังไม่มี</div>'}`;
+}
+function viewFeed(w,s){
+  const p=w.player;
+  const posts=[...s.posts].sort((a,b)=>b.ord-a.ord).slice(0,120);
+  return `<div class="card" style="margin:0;border-radius:0;border-width:0 0 1px"><div class="row top">${av(p,44)}<div class="grow">
+   <textarea class="inp" rows="3" maxlength="${settings.caps.post}" data-ui="composeText" placeholder="มีอะไรอยากโพสต์… (โพสต์ใหม่ = ผ่านไป 1 วัน)">${esc(ui.composeText)}</textarea><div class="mute sm" style="text-align:right" id="cnt-composeText">${ui.composeText.length.toLocaleString()} / ${settings.caps.post.toLocaleString()}</div>
+   ${ui.composeImg?`<div class="row" style="margin-top:6px"><img src="${esc(ui.composeImg)}" style="height:54px;border-radius:8px"><input class="inp" data-ui="composeCap" value="${esc(ui.composeCap)}" placeholder="อธิบายรูปให้ AI รู้ว่าเป็นรูปอะไร"><button class="icon" data-act="rmImg">✕</button></div>`:''}
+   <div class="row" style="margin-top:8px"><button class="btn sm" data-act="pickPostImg">🖼 แนบรูป</button><span class="grow"></span><button class="btn pri" data-act="submitPost">โพสต์</button></div></div></div></div>
+   ${posts.length?posts.map(x=>renderPost(w,s,x)).join(''):'<div class="pad center mute">ยังไม่มีโพสต์</div>'}`;
+}
+function usageCard(){
+  usageRoll();
+  const rows=Object.keys(SLOTS).filter(k=>realSlot(k)).map(k=>{const g=groupUse(k);const u=slotUse(k);const pct=g.limT?Math.min(100,g.tok/g.limT*100):0;
+    return `<div style="margin:8px 0"><div class="row"><b class="grow sm">${SLOTS[k][0]}</b><span class="sm mute">${u.calls} คำขอ · ${fmtN(u.in+u.out)} โทเค็น</span></div>${g.limT?`<div class="bar" style="margin-top:3px"><i style="width:${pct}%"></i></div><div class="sm mute">ผู้ให้บริการ/โมเดลนี้ใช้รวม ${fmtN(g.tok)} / ${fmtN(g.limT)} โทเค็น</div>`:''}${exhaustedNow(k)?'<div class="sm" style="color:#ff9aa1">⚠ ผู้ให้บริการแจ้งโควตาวันนี้หมด</div>':''}</div>`}).join('');
+  return `<div class="card"><h2>📊 โทเค็นวันนี้</h2>${rows||'<div class="mute sm">โหมดทดสอบ — ไม่มีการใช้โทเค็น</div>'}<div class="mute sm">นับตามที่ผู้ให้บริการรายงาน (ถ้าไม่รายงานจะประมาณเอง) รีเซ็ตเที่ยงคืนตามเวลาเครื่อง</div></div>`;
+}
+const vbar=v=>`<div class="vbar"><i class="${v>=0?'pos':'neg'}" style="${v>=0?'left:50%;width:'+(v/2)+'%':'right:50%;width:'+(-v/2)+'%'}"></i></div>`;
+const vibesBlock=s=>`<div style="margin-top:12px"><div class="mute sm">✨ ค่านิสัย</div>${(s.vibes||[]).map(v=>`<div style="margin:6px 0"><div class="row"><b class="grow sm">${esc(v.name)}</b><span class="sm">${v.v>0?'+':''}${v.v}</span></div>${vbar(v.v)}</div>`).join('')}</div>`;
+const affBlock=(s,id)=>{const v=affVal(s,id);return `<div style="margin-top:12px"><div class="mute sm">❤ ความรู้สึกที่มีต่อคุณ</div><div class="row"><b class="grow">${affLabel(v)}</b><span>${v>0?'+':''}${v}</span></div>${vbar(v)}</div>`};
+function viewProgress(w,s){
+  const st=s.stages[s.stageIdx]||{};const last=s.stageIdx>=s.stages.length-1;
+  const raw=levelFromXp(s.exp);const into=s.exp-xpCum(raw);const need=xpNeed(raw);const pct=raw>=100?100:Math.max(0,Math.min(100,into/need*100));
+  const gi=(st.gate||[]).map(g=>{const k=s.skills[g.skill];return{k,lvl:g.level,miss:Math.max(0,g.level-(k?skillLv(k):0)),i:g.skill}});
+  const miss=gi.reduce((a,g)=>a+g.miss,0);
+  const needOf=i=>{const g=gi.find(x=>x.i===i);return g&&g.miss>0?g.miss:0};
+  const ms=s.stages.map((x,i)=>`<div class="ms ${i<s.stageIdx?'done':i===s.stageIdx?'cur':''}">${i<s.stageIdx?'✓':x.level_to}</div>`).join('<div class="msl"></div>');
+  return `<div class="card"><div class="row"><div class="grow"><div class="mute sm">เลเวลเกม</div><div style="font-size:34px;font-weight:800">Lv ${s.level}<span class="mute" style="font-size:15px;font-weight:400"> / 100</span></div></div><div class="center"><div class="mute sm">ผู้ติดตาม</div><div style="font-size:22px;font-weight:700">${(Math.round(s.followers||0)).toLocaleString()}</div></div><div class="center" style="margin-left:14px"><div class="mute sm">วันที่</div><div style="font-size:22px;font-weight:700">${s.day}</div></div></div>
+   <div class="bar ${s.capped?'cap':''}" style="margin:8px 0"><i style="width:${pct}%"></i></div>
+   <div class="mute sm">${raw>=100?'MAX':`XP ${into.toLocaleString()} / ${need.toLocaleString()}`} · XP รวม ${s.exp.toLocaleString()}${(s.skillPts||0)>0?` · <b style="color:#ff9500">มี ${s.skillPts} แต้มสกิลให้ใช้</b>`:''}</div>
+   ${s.capped?`<div class="warn" style="margin:10px 0 0">⛔ ติดเพดานเลเวล ${st.level_to} — ต้องเพิ่มสกิลให้ถึงเงื่อนไขก่อน เรื่องถึงจะเดินต่อ</div>`:''}
+   ${s.status.length?`<div style="margin-top:8px">${s.status.map(t=>`<span class="pill tag">${esc(t)}</span>`).join('')}</div>`:''}</div>
+  ${s.completed?`<div class="card" style="border-color:var(--ok)"><h2>🎉 บรรลุเป้าหมายแล้ว!</h2><div class="mute sm">ตั้งเป้าหมายใหม่ต่อในโลกเดิม (ตัวละคร/ความทรงจำคงเดิม เลเวลเริ่มนับใหม่ แต้มสกิลคืนครึ่งหนึ่ง)</div><textarea class="inp" rows="3" data-ui="newGoalText" placeholder="เป้าหมายบทใหม่…">${esc(ui.newGoalText||'')}</textarea><div style="margin-top:8px"><button class="btn pri" data-act="newGoal">เริ่มบทใหม่</button></div></div>`:''}
+  <div class="card"><h2>🏁 ด่านเนื้อเรื่อง</h2><div class="ms-row">${ms}</div>
+   ${!last?`<div class="sm mute" style="margin-top:10px">ด่านถัดไป: ถึง Lv ${st.level_to} และสกิลต้องถึง</div>${gi.map(g=>`<div class="row" style="margin:6px 0"><span class="grow">${esc(g.k?g.k.name:'?')}</span><span class="sm mute">${g.k?skillLv(g.k):0}/${g.lvl}</span>${g.miss?`<span class="needTag">+${g.miss} ต้องการ</span>`:'<span class="up">✓</span>'}</div>`).join('')}
+    ${miss?`<button class="btn pri" style="margin-top:6px" data-act="claimGate" ${(s.skillPts||0)>=miss?'':'disabled'}>🔓 ปลดล็อกด้วยแต้ม (ใช้ ${miss} แต้ม · มี ${s.skillPts||0})</button>`:'<div class="sm up">สกิลครบเงื่อนไขแล้ว</div>'}`:'<div class="sm mute" style="margin-top:8px">ด่านสุดท้ายแล้ว</div>'}</div>
+  <div class="card"><div class="row"><h2 class="grow" style="margin:0">🛠 สกิล</h2><b style="color:#ff9500">${s.skillPts||0} แต้มให้ใช้</b></div><div class="mute sm">ได้ 2–3 แต้มทุกเลเวลอัพ กด + เพื่อเพิ่มสกิล 1 ระดับ</div>
+   ${s.skills.map((k,i)=>`<div style="margin:14px 0"><div class="row"><b class="grow">${esc(k.name)}</b>${needOf(i)?`<span class="needTag">+${needOf(i)} ต้องการ</span>`:''}</div><div class="row" style="margin-top:4px"><div class="bar grow"><i style="width:${skillLv(k)}%"></i></div><span class="sm" style="min-width:52px;text-align:right">${skillLv(k)}/100</span><button class="plus" data-act="addPt" data-i="${i}" ${(s.skillPts||0)<1||skillLv(k)>=100?'disabled':''}>+</button></div><div class="sm mute">${esc(skillTier(k))} (${skillLv(k)}%)</div></div>`).join('')}</div>
+  <div class="card"><h2>✨ ค่านิสัย</h2><div class="mute sm">ขึ้นลงตามสิ่งที่คุณโพสต์/ทำ ช่วง -100 ถึง +100 ยิ่งสูงยิ่งได้ XP เพิ่มสูงสุด +20% (ต่ำสุด -20%)</div>${(s.vibes||[]).map(v=>`<div style="margin:8px 0"><div class="row"><b class="grow">${esc(v.name)}</b><span>${v.v>0?'+':''}${v.v}</span></div>${vbar(v.v)}<div class="sm mute">${esc(v.desc||'')}</div></div>`).join('')}</div>
+  <div class="card"><h2>📖 สถานการณ์ตอนนี้</h2><div class="sm mute">ช่วงที่ ${s.stageIdx+1}/${s.stages.length}</div><b>${esc(st.title||'')}</b><div class="sm" style="margin-top:4px">${nl(st.state||'')}</div>
+   ${s.situation?`<hr><div class="sm"><b>ล่าสุด:</b> ${esc(s.situation)}</div>`:''}${s.summary?`<div class="sm mute" style="margin-top:6px">${nl(s.summary)}</div>`:''}</div>
+  ${usageCard()}
+  <div class="card"><h2>🧾 ประวัติล่าสุด</h2>${s.log.length?s.log.slice(0,10).map(l=>`<div class="sm" style="margin:6px 0"><b>วันที่ ${l.day}</b> · ${esc(l.text)} <span class="pill">+${l.exp} XP</span><div class="mute">${esc(l.verdict)}</div></div>`).join(''):'<div class="mute sm">ยังไม่มี</div>'}</div>`;
+}
+function viewNotif(w,s){
+  return `<div class="hdr"><b>🔔 แจ้งเตือน</b></div>`+(s.notifs.length?s.notifs.map(n=>{const e=ent(w,s,n.author);return `<div class="post" style="cursor:pointer;${n.read?'':'background:rgba(29,155,240,.08)'}" data-act="gotoPost" data-id="${n.postId}"><div class="row top">${av(e,34)}<div class="grow sm"><b>${esc(e.name)}</b> ${n.type==='mention'?'แท็กคุณ':'ตอบกลับ'} · <span class="mute">วันที่ ${n.day}</span><div>${esc(trunc(n.text,140))}</div></div></div></div>`}).join(''):'<div class="pad center mute">ยังไม่มีแจ้งเตือน</div>');
+}
+function slotCard(k){
+  const c=settings.slots[k];const P=PRESETS[c.preset]||{};const opts=Object.entries(PRESETS).filter(([id])=>k==='backup'?true:id!=='none').map(([id,p])=>`<option value="${id}" ${c.preset===id?'selected':''}>${p.label}</option>`).join('');
+  const dis=c.preset==='demo'||c.preset==='none';
+  return `<details class="card" ${c.preset==='demo'||k==='main'?'open':''}><summary>${SLOTS[k][0]} <span class="mute sm">— ${esc(c.preset==='demo'?'โหมดทดสอบ':c.preset==='none'?'ไม่ใช้':(c.model||P.model||'?'))}</span></summary>
+   <div class="mute sm">${SLOTS[k][1]}</div>
+   <label class="fld"><span>ผู้ให้บริการ</span><select class="inp" data-root="settings" data-b="slots.${k}.preset">${opts}</select></label>
+   ${dis?'':`<label class="fld"><span>Base URL</span><input class="inp" data-root="settings" data-b="slots.${k}.base" value="${esc(c.base||P.base||'')}" placeholder="${esc(P.base||'https://.../v1')}"></label>
+   <label class="fld"><span>API Key</span><small>${KEY_HELP[c.preset]||''}</small><input class="inp" type="password" autocomplete="off" data-root="settings" data-b="slots.${k}.key" value="${esc(c.key)}" placeholder="เก็บในเบราว์เซอร์นี้เท่านั้น"></label>
+   <label class="fld"><span>ชื่อโมเดล</span><input class="inp" list="dl-${k}" data-root="settings" data-b="slots.${k}.model" value="${esc(c.model)}" placeholder="${esc(P.model||'กด ดึงรายชื่อโมเดล')}"><datalist id="dl-${k}">${(ui.models[k]||[]).map(m=>`<option value="${esc(m)}">`).join('')}</datalist></label>
+   <div class="row wrap gap"><label class="fld grow"><span>โควตาโทเค็น/วัน (0 = ไม่เตือน)</span><input type="number" min="0" class="inp" data-root="settings" data-b="slots.${k}.dailyTokens" value="${c.dailyTokens||0}"></label><label class="fld grow"><span>โควตาคำขอ/วัน</span><input type="number" min="0" class="inp" data-root="settings" data-b="slots.${k}.dailyReqs" value="${c.dailyReqs||0}"></label></div>
+   <div class="sm mute">ค่าตั้งต้นของแต่ละเจ้าเป็นตัวเลขที่ค้นเจอ อาจเปลี่ยนได้ — ปรับให้ตรงกับหน้าบัญชีของคุณ · วันนี้ช่องนี้ใช้ ${slotUse(k).calls} คำขอ / ${fmtN(slotUse(k).in+slotUse(k).out)} โทเค็น${exhaustedNow(k)?' · <b style="color:#ff9aa1">แจ้งโควตาวันหมด</b> <span data-act="clearExh" data-slot="'+k+'" style="color:var(--acc);cursor:pointer">ล้าง</span>':''}</div>
+   <label class="fld"><span>Temperature (ความสุ่ม) ${c.temp}</span><input type="number" step="0.1" min="0" max="2" class="inp" data-root="settings" data-b="slots.${k}.temp" value="${c.temp}"></label>
+   <div class="row wrap gap"><button class="btn sm" data-act="fetchModels" data-slot="${k}">ดึงรายชื่อโมเดล</button><button class="btn sm" data-act="testSlot" data-slot="${k}">ทดสอบ</button></div>`}</details>`;
+}
+function viewSettings(back){
+  return `<div class="hdr">${back?`<button class="icon" data-act="home">←</button>`:''}<b>⚙ ตั้งค่า</b></div>
+  <div class="warn">คีย์ API เก็บในเบราว์เซอร์เครื่องนี้เท่านั้น (ไม่ถูกส่งไปที่อื่นนอกจากผู้ให้บริการที่คุณเลือก) แบบฟรีบางเจ้าอาจนำ prompt ไปปรับปรุงโมเดล ส่วนโควตา/ชื่อโมเดลเปลี่ยนบ่อย — ดูในหน้าบัญชีของเจ้านั้น</div>
+  ${Object.keys(SLOTS).map(slotCard).join('')}
+  <div class="pad row wrap gap"><button class="btn sm" data-act="copyMain">ใช้ค่าของ "ตัวละครหลัก" กับ NPC + กรรมการ</button></div>
+  <div class="card"><h2>🎮 ตั้งค่าเกม</h2>
+   <label class="fld"><span>EXP ที่ต้องใช้ต่อเลเวล เป็น % (100 = ปกติ, 150 = เล่นนานขึ้น 1.5 เท่า)</span><input type="number" min="10" class="inp" data-root="settings" data-b="xpScale" value="${settings.xpScale||100}"></label>
+   <label class="fld"><span>ภาษาที่ AI เขียน (ข้อความในเมนู/ปุ่มยังเป็นไทย)</span><select class="inp" data-root="settings" data-b="lang"><option value="auto" ${(settings.lang||'auto')==='auto'?'selected':''}>ตามภาษาที่กรอกข้อมูลโลก (แนะนำ)</option><option value="th" ${settings.lang==='th'?'selected':''}>ไทยทั้งหมด</option><option value="en" ${settings.lang==='en'?'selected':''}>English ทั้งหมด</option></select></label>
+   <label class="fld"><span>โทนภาษา</span><select class="inp" data-root="settings" data-b="tone"><option value="soft" ${settings.tone==='soft'?'selected':''}>อ่อน</option><option value="medium" ${settings.tone==='medium'?'selected':''}>กลาง (สมจริง)</option><option value="hard" ${settings.tone==='hard'?'selected':''}>จัดเต็ม (ดราม่าเน็ต)</option></select></label>
+   <label class="fld"><span>จำนวนโพสต์ชาวเน็ตต่อรอบ (น้อย = ประหยัดโควตา)</span><input type="number" min="0" max="15" class="inp" data-root="settings" data-b="crowd" value="${settings.crowd}"></label>
+   <h2 style="margin-top:14px">📏 เพดานตัวอักษรที่ส่ง AI</h2><div class="mute sm">กรอกได้ไม่จำกัด แต่ส่ง AI ไม่เกินเพดาน ตัวนับอยู่หน้าสร้างโลก</div>
+   ${[['world','โลกรวมทุกช่อง'],['premise','สถานการณ์ตั้งต้น + เป้าหมาย'],['char','ตัวละครหลัก ต่อตัว'],['player','ตัวเรา (กรอกได้สูงสุด)'],['playerSend','ตัวเรา (ส่ง AI)'],['post','โพสต์ / เม้น'],['answer','คำตอบเควส']].map(([k,l])=>`<label class="fld"><span>${l}</span><input type="number" min="200" class="inp" data-root="settings" data-b="caps.${k}" value="${settings.caps[k]}"></label>`).join('')}
+   <label class="row"><input type="checkbox" data-root="settings" data-b="dicebear" ${settings.dicebear?'checked':''}><span class="sm">ใช้อวตารสุ่มจากอินเทอร์เน็ต (DiceBear) ถ้าตัวละครไม่มีรูป</span></label></div>
+  <div class="card"><h2>💾 ข้อมูล</h2><div class="row wrap gap"><button class="btn sm" data-act="backup">สำรองข้อมูลทั้งหมด</button><button class="btn sm" data-act="restore">กู้คืนจากไฟล์</button></div><div class="mute sm" style="margin-top:6px">ข้อมูลอยู่ในเบราว์เซอร์ ถ้าล้างข้อมูลเบราว์เซอร์จะหาย ควรสำรองไว้บ้าง (ไฟล์สำรองไม่รวมคีย์ API)</div></div>`;
+}
+function viewGame(){
+  const w=curWorld(),s=curSave();const unread=s.notifs.filter(n=>!n.read).length;const openQ=s.quests.filter(q=>!q.done).length;
+  let body='';
+  if(ui.tab==='feed')body=`<div class="hdr"><div class="grow"><b>${esc(w.setting.platform||w.name)}</b><div class="mute sm">วันที่ ${s.day} · Lv ${s.level}${s.capped?' ⛔':''} · 👥 ${fmtC(Math.round(s.followers||0))}${s.status.length?' · '+esc(s.status.join(', ')):''}</div></div><button class="btn q ${s.questsNew?'pulse':''}" data-act="openQuests">⚔ เควส${openQ?` (${openQ})`:''}</button><button class="icon" data-act="home" title="หน้าหลัก">⌂</button></div>`+viewFeed(w,s);
+  else if(ui.tab==='progress')body=`<div class="hdr"><b>⭐ ความคืบหน้า</b></div>`+viewProgress(w,s);
+  else if(ui.tab==='notif')body=viewNotif(w,s);
+  else body=viewSettings(false)+`<div class="pad"><button class="btn" data-act="home">⌂ กลับหน้าหลัก</button></div>`;
+  return body+`<nav class="tabs"><div>${[['feed','🐦','ทวิต'],['progress','⭐','เลเวล'],['notif','🔔','แจ้งเตือน'],['settings','⚙','ตั้งค่า']].map(([k,i,l])=>`<button class="${ui.tab===k?'on':''}" data-act="tab" data-tab="${k}"><b>${i}</b>${l}${k==='notif'&&unread?`<span class="badge">${unread}</span>`:''}${k==='progress'&&(s.skillPts||0)>0?`<span class="badge" style="background:#ff9500">${s.skillPts}</span>`:''}</button>`).join('')}</div></nav>`;
+}
+function modalHTML(){
+  const m=ui.modal;if(!m)return '';const w=curWorld(),s=curSave();
+  const wrap=inner=>`<div class="modal" data-act="closeModalBg"><div class="sheet">${inner}</div></div>`;
+  if(m.type==='result'&&s.lastResult){const r=s.lastResult;const xp=r.xpParts||{};
+    return wrap(`<div class="row"><h2 class="grow">${r.kind==='post'?'ผลของโพสต์':'ผลของเควส'}</h2><button class="icon" data-act="closeModal">✕</button></div><div style="font-size:16px">${nl(r.verdict)}</div><div style="margin:10px 0"><span class="pill">คะแนน ${r.score}/10</span><span class="pill">+${r.exp} XP</span>${r.fg!=null?`<span class="pill">ผู้ติดตาม ${r.fg>=0?'+':''}${r.fg.toLocaleString()}</span>`:''}${r.ptsGain?`<span class="pill">+${r.ptsGain} แต้มสกิล</span>`:''}${r.tokens?`<span class="pill">ใช้ ~${fmtN(r.tokens)} โทเค็น</span>`:''}</div>
+     ${xp.base!=null?`<div class="sm mute">XP: ฐาน ${xp.base} × ค่านิสัย ${xp.vm}${xp.viral?' × กระแสดัง 1.1':''}${xp.rel?' + ความสัมพันธ์ '+xp.rel:''}</div>`:''}
+     ${(r.vibes||[]).length?`<div style="margin-top:10px"><b class="sm">ค่านิสัย</b>${r.vibes.map(v=>`<div class="sm">${esc(v.name)}: ${v.d>0?'+':''}${v.d} → ${v.v}</div>`).join('')}</div>`:''}
+     ${(r.aff||[]).length?`<div style="margin-top:10px"><b class="sm">ความชอบของตัวเด่น</b>${r.aff.map(a=>`<div class="sm">${esc(ent(w,s,a.id).name)}: ${a.d>0?'+':''}${a.d} → ${a.v} (${affLabel(a.v)})</div>`).join('')}</div>`:''}
+     ${r.levelUp?`<div class="warn" style="margin:8px 0;border-color:var(--ok)">🎉 เลเวลอัพ! ตอนนี้ Lv ${r.level}${s.questsNew?' — เควสชุดใหม่มาแล้ว':''}</div>`:''}
+     ${r.stageAdvanced?`<div class="warn" style="margin:8px 0;border-color:var(--acc2)">📖 เรื่องเดินเข้าช่วงใหม่: <b>${esc(r.stageAdvanced)}</b></div>`:''}
+     ${r.capped?`<div class="warn" style="margin:8px 0">⛔ ติดเพดานเลเวล — ใช้แต้มสกิลที่แท็บ "เลเวล"</div>`:''}
+     ${r.completed||s.completed?`<div class="warn" style="margin:8px 0;border-color:var(--ok)">🏁 ถึงเลเวล 100 แล้ว! ไปแท็บ "เลเวล" เพื่อตั้งเป้าหมายใหม่</div>`:''}
+     <div class="center" style="margin-top:12px"><button class="btn pri" data-act="closeModal">ไปดูฟีด</button></div>`)}
+  if(m.type==='quests'){const sel=s.quests.find(q=>q.id===ui.questSel);
+    return wrap(`<div class="row"><h2 class="grow">⚔ เควสสถานการณ์</h2><button class="icon" data-act="closeModal">✕</button></div><div class="mute sm">เลือก 1 สถานการณ์ แล้วตอบแบบอิสระ — จบแล้วผ่านไป 1 วัน เควสชุดใหม่จะมาเมื่ออัพเลเวล</div>
+     ${s.quests.length?s.quests.map(q=>`<div class="q-item ${q.done?'done':''} ${q.id===ui.questSel?'sel':''}" data-act="selQuest" data-id="${q.id}"><b>${q.done?'✔ ':''}${esc(q.title)}</b>${q.done?'':`<span class="pill" style="float:right">+${questRange(s).join('–')} XP</span>`}${q.id===ui.questSel||!q.done?`<div class="sm" style="margin-top:4px">${nl(q.situation)}</div>`:''}</div>`).join(''):`<div class="center mute" style="padding:20px">ยังไม่มีเควส<br><button class="btn pri" style="margin-top:8px" data-act="regenQuests">สร้างเควส</button></div>`}
+     ${sel&&!sel.done?`<textarea class="inp" rows="8" maxlength="${settings.caps.answer}" data-ui="questText" placeholder="คุณจะทำ/พูดอะไร? (ตอบอิสระ ยาวได้เต็มที่ ยิ่งละเอียดยิ่งได้คะแนน)">${esc(ui.questText)}</textarea><div class="mute sm" style="text-align:right" id="cnt-questText">${(ui.questText||'').length.toLocaleString()} / ${settings.caps.answer.toLocaleString()}</div><div class="row" style="margin-top:8px"><span class="grow"></span><button class="btn pri" data-act="submitQuest">ส่งคำตอบ</button></div>`:''}`)}
+  if(m.type==='quota'){return wrap(`<h2>⚠ โควตาอาจไม่พอ</h2>${m.issues.map(i=>`<div class="warn" style="margin:8px 0">${esc(i)}</div>`).join('')}<div class="mute sm">เปลี่ยนโมเดล/ผู้ให้บริการในตั้งค่าก่อน หรือทำต่อเลยก็ได้ (ถ้าตั้งช่อง "สำรอง" ไว้ ระบบจะสลับให้อัตโนมัติเมื่อช่องหลักล้ม) ตัวเลขโควตาเป็นแค่ที่คุณกรอก ไม่ใช่ตัวเลขจริงจากผู้ให้บริการ</div><div class="row wrap gap" style="margin-top:12px"><button class="btn pri" data-act="quotaSettings">⚙ ไปเปลี่ยนโมเดล</button><button class="btn" data-act="quotaGo">ทำต่อเลย</button><button class="btn" data-act="quotaCancel">ยกเลิก</button></div>`)}
+  if(m.type==='thread'){
+    const p=s.posts.find(x=>x.id===m.postId);if(!p)return '';const to=p.replies.find(r=>r.id===ui.replyTo);
+    return wrap(`<div class="row"><b class="grow">เธรด · ${p.replies.length} เม้น</b><button class="icon" data-act="closeModal">✕</button></div>${postHead(w,s,p)}</div></div>${actsHTML(p,true)}
+     <div class="reps" style="margin-top:10px">${p.replies.map(r=>repHTML(w,s,r,p,true)).join('')||'<div class="mute sm">ยังไม่มีเม้น</div>'}${ui.typing===p.id?'<div class="rep mute sm">…มีคนกำลังพิมพ์</div>':''}</div>
+     <div class="composer"><div class="sm mute" style="margin-bottom:4px">${to?`กำลังตอบ <b>${esc(ent(w,s,to.author).name)}</b> <span data-act="cancelReply" style="cursor:pointer;color:var(--acc)">✕ ตอบโพสต์แทน</span>`:'ตอบโพสต์นี้ (หรือกด ↩ ตอบ ที่เม้นของใครสักคน)'}</div>
+     <div class="row" style="align-items:flex-end"><textarea class="inp" rows="2" maxlength="${settings.caps.post}" data-ui="commentText" placeholder="เขียนเม้น…">${esc(ui.commentText)}</textarea><button class="btn pri" data-act="submitComment" data-id="${p.id}">ส่ง</button></div><div class="mute sm" style="text-align:right" id="cnt-commentText">${(ui.commentText||'').length.toLocaleString()} / ${settings.caps.post.toLocaleString()}</div></div>`)}
+  if(m.type==='profile'){
+    const e=ent(w,s,m.key);const isMain=w.chars.some(c=>c.id===m.key);const isMe=m.key==='me';
+    const th=s.thoughts[m.key];const posts=s.posts.filter(p=>p.author===m.key).sort((a,b)=>b.ord-a.ord).slice(0,6);
+    let editor='';
+    if(ui.editChar&&(isMain||isMe)){const base=isMe?'player':'chars.'+w.chars.findIndex(c=>c.id===m.key);const o=isMe?w.player:e;
+      const f=(l,k,r=3)=>`<label class="fld"><span>${l}</span><textarea class="inp" rows="${r}" data-root="world" data-b="${base}.${k}">${esc(o[k]||'')}</textarea></label>`;
+      editor=`<hr><div class="mute sm">แก้แล้วมีผลกับโพสต์รอบต่อไป</div>${f('นิสัยจริง','personality',4)}${f('สไตล์พิมพ์','socialStyle',3)}${f('ชอบ','likes',2)}${f('ไม่ชอบ','dislikes',2)}${f('วิธีรับมือ/ปฏิกิริยา','behavior',3)}${isMe?f('ความสัมพันธ์/ภาพลักษณ์ปัจจุบัน','currentStatus',3)+`<label class="fld"><span>โน้ตสถานะเพิ่มเติม (เฉพาะเซฟนี้)</span><textarea class="inp" rows="2" data-root="save" data-b="playerNote">${esc(s.playerNote||'')}</textarea></label>`:''}<button class="btn pri sm" data-act="saveCharEdit">เสร็จ</button>`}
+    return wrap(`<div class="row"><div class="grow"></div><button class="icon" data-act="closeModal">✕</button></div>
+     <div class="row top">${av(e,64)}<div class="grow"><div style="font-size:19px;font-weight:700">${esc(e.name)}</div><div class="mute">@${esc(e.handle||e.name)}</div>${e.role?`<span class="pill">${esc(e.role)}</span>`:''}${isMe?'<span class="pill">คุณ</span>':''}${(isMain||isMe)?starPill(w,s,m.key)+'<span class="pill">👥 '+fmtC(folOf(w,s,m.key))+' ผู้ติดตาม</span>':''}${isMe?s.status.map(t=>`<span class="pill tag">${esc(t)}</span>`).join(''):''}</div></div>
+     ${e.bio?`<div style="margin-top:8px">${nl(e.bio)}</div>`:''}${e.persona?`<div class="mute sm" style="margin-top:6px">${esc(e.persona)}</div>`:''}
+     ${isMain?`<div style="margin-top:14px"><div class="mute sm">💭 ในใจตอนนี้</div><div class="thought">${th?nl(th.text):'(ยังอ่านใจไม่ออก — รอให้เรื่องเดินก่อน)'}</div>${th?`<div class="mute sm" style="margin-top:-12px">อัพเดตวันที่ ${th.day}</div>`:''}</div>`:''}
+     ${isMain?affBlock(s,m.key):''}${isMe?vibesBlock(s):''}
+     ${isMe&&w.player.currentStatus?`<div class="sm mute" style="margin-top:8px">ภาพลักษณ์ตอนนี้: ${esc(w.player.currentStatus)}</div>`:''}
+     ${(isMain||isMe)&&!ui.editChar?`<div style="margin-top:10px"><button class="btn sm" data-act="editChar">✏ แก้ข้อมูล/นิสัย</button></div>`:''}${editor}
+     <hr>${profilePosts(w,s,m.key)}`)}
+  return '';
+}
+function bannerHTML(){
+  const s=curSave(),w=curWorld();if(!ui.banner||ui.screen!=='game'||!s||!s.lastResult)return '';
+  const r=s.lastResult;const chip=(inner,d)=>`<span class="chip ${d>0?'up':'dn'}">${inner} ${d>0?'↑':'↓'}</span>`;
+  const vib=(r.vibes||[]).filter(v=>v.d).map(v=>chip(esc(v.name),v.d)).join('');
+  const af=(r.aff||[]).filter(a=>a.d).map(a=>chip(av(ent(w,s,a.id),24)+esc(ent(w,s,a.id).name),a.d)).join('');
+  return `<div class="banner ${ui.bannerAnim?'anim':''}"><div class="row"><b class="xp grow">✨ +${r.exp} XP</b><button class="icon" data-act="closeBanner">✕</button></div>
+   ${r.fg!=null?`<hr><div class="row"><b style="font-size:20px" class="grow">👥 ผู้ติดตาม</b><b style="font-size:24px" class="${r.fg>=0?'up':'dn'}">${r.fg>=0?'+':''}${r.fg.toLocaleString()}</b></div>`:''}
+   <div class="mute" style="margin:4px 0 8px">${esc(r.headline||r.verdict||'')}</div>
+   ${vib?`<div>${vib}</div>`:''}
+   ${af?`<hr><div>${af}</div>`:''}
+   ${r.levelUp?`<div class="up" style="margin-top:8px;font-weight:700">🎉 เลเวลอัพ! Lv ${r.level}${r.ptsGain?' · +'+r.ptsGain+' แต้มสกิล':''}</div>`:''}
+   ${r.stageAdvanced?`<div style="margin-top:6px;color:#8ab4ff;font-weight:700">📖 เรื่องเดินเข้าช่วงใหม่</div>`:''}
+   <div style="margin-top:10px"><span data-act="openResult" style="color:#2ee6a6;cursor:pointer">ดูการเปลี่ยนแปลงทั้งหมด →</span></div></div>`;
+}
+function render(){
+  const app=$('#app');let h='';const y=window.scrollY;
+  if(ui.screen==='home')h=viewHome();
+  else if(ui.screen==='editor')h=viewEditor();
+  else if(ui.screen==='settings')h=viewSettings(true);
+  else if(ui.screen==='intro')h=viewIntro();
+  else if(ui.screen==='first')h=viewFirst();
+  else if(ui.screen==='game')h=viewGame();
+  const sh0=$('.sheet');const st0=sh0&&ui.modal?sh0.scrollTop:0;
+  app.innerHTML=h+modalHTML()+bannerHTML();ui.bannerAnim=false;
+  if(ui.screen==='editor')updateCounters();
+  const sh1=$('.sheet');if(sh1&&st0)sh1.scrollTop=st0;
+  if(ui.screen==='game'&&ui.tab==='notif'){const s=curSave();if(s.notifs.some(n=>!n.read)){setTimeout(()=>{s.notifs.forEach(n=>n.read=true);persistSaves();},50)}}
+  window.scrollTo(0,y);
+}
+
+/* ================= events ================= */
+let draftTimer=null;
+function scheduleDraftSave(){clearTimeout(draftTimer);draftTimer=setTimeout(()=>LS.set('ss_draft',ui.draft),400)}
+function applyPreset(k){const c=settings.slots[k];const P=PRESETS[c.preset]||{};c.base='';c.model=P.model||'';const lm=PRESET_LIMITS[c.preset]||[0,0];c.dailyTokens=lm[0];c.dailyReqs=lm[1];persistSettings()}
+function onInput(e){
+  const el=e.target;
+  if(el.dataset.ui){ui[el.dataset.ui]=el.value;const cn=document.getElementById('cnt-'+el.dataset.ui);if(cn)cn.textContent=el.value.length.toLocaleString()+' / '+(el.maxLength>0?el.maxLength.toLocaleString():'');return}
+  const path=el.dataset.b;if(!path)return;
+  const v=el.type==='checkbox'?el.checked:el.type==='number'?(el.value===''?0:Number(el.value)):el.value;
+  const root=el.dataset.root;
+  if(root==='settings'){setPath(settings,path,v);persistSettings();if(/^slots\.\w+\.preset$/.test(path)&&e.type==='change'){applyPreset(path.split('.')[1]);render()}}
+  else if(root==='draft'){setPath(ui.draft,path,v);scheduleDraftSave();updateCounters()}
+  else if(root==='world'){setPath(curWorld(),path,v);persistWorlds()}
+  else if(root==='save'){setPath(curSave(),path,v);persistSaves()}
+}
+document.addEventListener('toggle',e=>{const k=e.target.dataset&&e.target.dataset.key;if(k)ui.open[k]=e.target.open},true);
+document.addEventListener('input',onInput);document.addEventListener('change',onInput);
+document.addEventListener('keydown',e=>{if(e.key==='Enter'&&!e.shiftKey&&e.target.dataset&&e.target.dataset.enter){e.preventDefault();actions[e.target.dataset.enter]({dataset:e.target.dataset})}});
+document.addEventListener('click',e=>{
+  const el=e.target.closest('[data-act]');if(!el)return;
+  if(el.dataset.act==='closeModalBg'){if(e.target!==el)return}
+  const f=actions[el.dataset.act];if(f){e.stopPropagation();f(el,e)}
+});
+let pickTarget=null;
+$('#filePick').addEventListener('change',async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f||!pickTarget)return;
+  try{
+    if(pickTarget.type==='avatar'){const d=await readImage(f,160,.85);setPath(ui.draft,pickTarget.path,d);scheduleDraftSave();render()}
+    else if(pickTarget.type==='post'){ui.composeImg=await readImage(f,520,.8);render()}
+  }catch{toast('อ่านรูปไม่ได้','err')}
+});
+$('#fileImport').addEventListener('change',async e=>{
+  const f=e.target.files[0];e.target.value='';if(!f)return;
+  try{const o=JSON.parse(await f.text());
+    if(o.kind==='ss-backup'){if(!confirm('กู้คืนจะเขียนทับโลก/เซฟทั้งหมดที่มีอยู่ ดำเนินการต่อ?'))return;worlds=o.worlds||[];saves=o.saves||[];saves.forEach(x=>migrateSave(x));persistWorlds();persistSaves();toast('กู้คืนแล้ว','ok');ui.screen='home';render()}
+    else if(o.kind==='ss-world'&&o.world){const w=o.world;if(worlds.some(x=>x.id===w.id))w.id=uid('w');worlds.push(w);persistWorlds();toast('นำเข้าโลกแล้ว','ok');render()}
+    else toast('ไฟล์นี้ไม่ใช่ไฟล์ของเกมนี้','err')
+  }catch{toast('อ่านไฟล์ไม่ได้','err')}
+});
+const sanitizeWorld=w=>{const b=newWorld();w=Object.assign(b,w);w.setting=Object.assign(b.setting,w.setting||{});w.player=Object.assign(newChar(true),w.player||{});w.player.id='me';w.chars=(w.chars||[]).map(c=>Object.assign(newChar(false),c));return w};
+const actions={
+ home(){ui.screen='home';ui.modal=null;ui.banner=false;render()},
+ closeBanner(){ui.banner=false;render()},
+ openResult(){ui.banner=false;ui.modal={type:'result'};render()},
+ addPt(el){const s=curSave();const k=s.skills[Number(el.dataset.i)];if(!k||(s.skillPts||0)<1||skillLv(k)>=100)return;k.pts=skillLv(k)+1;s.skillPts--;const adv=recompute(s);persistSaves();if(adv.length)toast('📖 เรื่องเดินเข้าช่วงใหม่: '+s.stages[s.stageIdx].title,'ok',5000);render()},
+ claimGate(){const s=curSave();const st=s.stages[s.stageIdx];if(!st)return;const needs=(st.gate||[]).map(g=>({k:s.skills[g.skill],n:Math.max(0,g.level-skillLv(s.skills[g.skill]||{}))})).filter(x=>x.k&&x.n>0);const tot=needs.reduce((a,x)=>a+x.n,0);if(!tot)return toast('สกิลครบเงื่อนไขแล้ว','ok');if(tot>(s.skillPts||0))return toast('แต้มไม่พอ: ต้องใช้ '+tot+' มี '+(s.skillPts||0),'err');needs.forEach(x=>{x.k.pts=skillLv(x.k)+x.n});s.skillPts-=tot;const adv=recompute(s);persistSaves();toast(adv.length?'📖 เรื่องเดินเข้าช่วงใหม่: '+s.stages[s.stageIdx].title:'ใช้ '+tot+' แต้มแล้ว','ok',5000);render()},
+ goSettings(){ui.screen='settings';render()},
+ tab(el){ui.tab=el.dataset.tab;ui.modal=null;render()},
+ newWorld(){
+  const dr=LS.get('ss_draft',null);
+  if(dr&&!worlds.some(w=>w.id===dr.id)&&(dr.name||dr.premise||dr.chars.length)&&confirm('มีฉบับร่างโลกที่ค้างไว้ ('+(dr.name||'ไม่มีชื่อ')+') — ใช้ต่อไหม? (ยกเลิก = เริ่มใหม่เปล่าๆ)')){ui.draft=sanitizeWorld(dr)}
+  else ui.draft=newWorld();
+  ui.screen='editor';render();window.scrollTo(0,0)},
+ editWorld(el){ui.draft=sanitizeWorld(JSON.parse(JSON.stringify(worlds.find(w=>w.id===el.dataset.id))));ui.screen='editor';render();window.scrollTo(0,0)},
+ cancelEdit(){if(confirm('ออกจากหน้านี้? (ฉบับร่างยังถูกเก็บไว้ ถ้ายังไม่ได้บันทึก)')){ui.screen='home';render()}},
+ addChar(){if(ui.draft.chars.length<10){const c=newChar(false);ui.open[c.id]=true;ui.draft.chars.push(c);scheduleDraftSave();render()}},
+ delChar(el){if(confirm('ลบตัวละครนี้?')){ui.draft.chars.splice(Number(el.dataset.i),1);scheduleDraftSave();render()}},
+ saveWorld(){
+  const d=ui.draft;if(!d.name.trim())return toast('ใส่ชื่อโลกก่อน','err');if(!d.player.name.trim())return toast('ใส่ชื่อตัวเอก (ตัวเรา) ก่อน','err');if(!d.premise.trim())return toast('ใส่สถานการณ์ตั้งต้นก่อน','err');
+  d.chars.forEach(c=>{if(!c.name.trim())c.name='(ไม่มีชื่อ)'});
+  const i=worlds.findIndex(w=>w.id===d.id);const copy=JSON.parse(JSON.stringify(d));if(i>=0)worlds[i]=copy;else worlds.push(copy);
+  persistWorlds();try{localStorage.removeItem('ss_draft')}catch{}toast('บันทึกแล้ว','ok');ui.screen='home';render();window.scrollTo(0,0)},
+ pickAvatar(el){pickTarget={type:'avatar',path:el.dataset.path};$('#filePick').click()},
+ clearAvatar(el){setPath(ui.draft,el.dataset.path,'');scheduleDraftSave();render()},
+ pickPostImg(){pickTarget={type:'post'};$('#filePick').click()},
+ rmImg(){ui.composeImg='';ui.composeCap='';render()},
+ exportWorld(el){const w=worlds.find(w=>w.id===el.dataset.id);download((w.name||'world')+'.json',{kind:'ss-world',world:w})},
+ importWorld(){$('#fileImport').click()},
+ restore(){$('#fileImport').click()},
+ backup(){const ws=JSON.parse(JSON.stringify(worlds));download('socialsim-backup.json',{kind:'ss-backup',worlds:ws,saves})},
+ delWorld(el){const id=el.dataset.id;if(confirm('ลบโลกนี้พร้อมเซฟทั้งหมด?')){worlds=worlds.filter(w=>w.id!==id);saves=saves.filter(s=>s.worldId!==id);persistWorlds();persistSaves();render()}},
+ delSave(el){if(confirm('ลบเซฟนี้?')){saves=saves.filter(s=>s.id!==el.dataset.id);persistSaves();render()}},
+ newGame(el){beginNewGame(el.dataset.id)},
+ continue(el){ui.banner=false;const s=saves.find(x=>x.id===el.dataset.id);ui.saveId=s.id;ui.worldId=s.worldId;ui.tab='feed';ui.modal=null;ui.screen=s.phase==='intro'?'intro':s.phase==='first'?'first':'game';render();window.scrollTo(0,0)},
+ introNext(){const s=curSave();s.phase='first';persistSaves();ui.screen='first';render();window.scrollTo(0,0)},
+ async submitFirst(){
+  const t=ui.firstText.trim();if(!t)return toast('พิมพ์โพสต์แรกก่อน','err');
+  const ok=await doTurn({kind:'post',text:t});
+  if(ok){const s=curSave();s.phase='play';persistSaves();ui.firstText='';ui.screen='game';ui.tab='feed';render();window.scrollTo(0,0)}
+ },
+ async submitPost(){
+  const t=ui.composeText.trim();if(!t)return toast('พิมพ์ก่อน','err');
+  const ok=await doTurn({kind:'post',text:t,image:ui.composeImg,caption:ui.composeCap.trim()});
+  if(ok){ui.composeText='';ui.composeImg='';ui.composeCap='';render();window.scrollTo(0,0)}
+ },
+ openThread(el){ui.modal={type:'thread',postId:el.dataset.id};ui.replyTo=null;ui.commentText='';render()},
+ replyTo(el){ui.replyTo=el.dataset.rid;render();setTimeout(()=>{const t=document.querySelector('[data-ui="commentText"]');if(t)t.focus()},30)},
+ cancelReply(){ui.replyTo=null;render()},
+ submitComment(el){const t=(ui.commentText||'').trim();if(!t)return toast('พิมพ์ก่อน','err');doComment(el.dataset.id,t,ui.replyTo)},
+ quotaGo(){const r=ui.quotaRes;ui.quotaRes=null;ui.modal=null;render();if(r)r(true)},
+ quotaCancel(){const r=ui.quotaRes;ui.quotaRes=null;ui.modal=null;render();if(r)r(false)},
+ quotaSettings(){const r=ui.quotaRes;ui.quotaRes=null;ui.modal=null;if(ui.screen==='game')ui.tab='settings';else ui.screen='settings';render();if(r)r(false)},
+ clearExh(el){delete usage.exhausted[slotId(el.dataset.slot)];persistUsage();render()},
+ rtToggle(el){const p=curSave().posts.find(p=>p.id===el.dataset.id);p.reposted=!p.reposted;persistSaves();render()},
+ like(el){const p=curSave().posts.find(p=>p.id===el.dataset.id);p.liked=!p.liked;persistSaves();render()},
+ profile(el){const k=el.dataset.key;if(!k)return;ui.modal={type:'profile',key:k};ui.editChar=false;render()},
+ editChar(){ui.editChar=true;render()},
+ saveCharEdit(){ui.editChar=false;toast('บันทึกแล้ว','ok');render()},
+ closeModal(){if(ui.quotaRes){const r=ui.quotaRes;ui.quotaRes=null;r(false)}ui.modal=null;ui.editChar=false;ui.replyTo=null;render()},
+ closeModalBg(){actions.closeModal()},
+ openQuests(){const s=curSave();s.questsNew=false;persistSaves();ui.modal={type:'quests'};ui.questSel=null;ui.questText='';render()},
+ selQuest(el){const q=curSave().quests.find(q=>q.id===el.dataset.id);if(q&&!q.done){ui.questSel=q.id;ui.questText='';render()}},
+ async submitQuest(){
+  const s=curSave();const q=s.quests.find(q=>q.id===ui.questSel);const t=(ui.questText||'').trim();if(!q||!t)return toast('ตอบก่อนนะ','err');
+  ui.modal=null;render();
+  const ok=await doTurn({kind:'quest',text:t,quest:{id:q.id,title:q.title,situation:q.situation}});
+  if(ok){ui.questText='';ui.questSel=null;render()}else{ui.modal={type:'quests'};render()}
+ },
+ async regenQuests(){showBusy('กำลังสร้างเควส…');try{const w=curWorld(),s=curSave();s.quests=await genQuests(w,s);persistSaves()}catch(e){toast('สร้างเควสไม่สำเร็จ: '+e.message,'err',7000)}hideBusy();render()},
+ newGoal(){setNewGoal(ui.newGoalText||'')},
+ gotoPost(el){ui.tab='feed';ui.modal={type:'thread',postId:el.dataset.id};ui.replyTo=null;ui.commentText='';render()},
+ copyMain(){const m=settings.slots.main;['npc','referee'].forEach(k=>{settings.slots[k]=Object.assign({},m)});persistSettings();toast('คัดลอกแล้ว','ok');render()},
+ async testSlot(el){const k=el.dataset.slot;showBusy('กำลังทดสอบ…');try{const t=await callLLM(k,[{role:'user',content:'ตอบสั้นๆ ว่า OK'}]);toast('✅ ใช้ได้: '+trunc(t,60),'ok')}catch(e){toast('❌ '+e.message,'err',8000)}hideBusy()},
+ async fetchModels(el){
+  const k=el.dataset.slot;const c=settings.slots[k];const base=(c.base||PRESETS[c.preset].base||'').replace(/\/+$/,'');
+  if(!base)return toast('ใส่ Base URL ก่อน','err');
+  if(!c.key&&c.preset!=='ollama')return toast('ยังไม่ได้ใส่ API Key ของช่องนี้','err');
+  showBusy('กำลังดึงรายชื่อโมเดล…');
+  try{const h={};if(c.key)h.Authorization='Bearer '+c.key;const r=await fetch(base+'/models',{headers:h});
+    if(!r.ok){let t='';try{t=(await r.text()).slice(0,160)}catch{}throw new Error('HTTP '+r.status+(r.status===401||r.status===403?' — คีย์ไม่ถูกต้อง หรือไม่มีสิทธิ์':r.status===404?' — Base URL น่าจะผิด':'')+' '+t)}
+    const d=await r.json();const ids=(d.data||d.models||[]).map(m=>String(m.id||m.name||'').replace(/^models\//,'')).filter(Boolean).sort();ui.models[k]=ids;toast('พบ '+ids.length+' โมเดล — คลิกช่องชื่อโมเดลเพื่อเลือก','ok')}
+  catch(e){toast('ดึงไม่ได้: '+(e instanceof TypeError?'เบราว์เซอร์เชื่อมต่อไม่ได้ (Failed to fetch) — เช็กอินเทอร์เน็ต, Base URL, หรือว่าเบราว์เซอร์บล็อกการเรียกจากไฟล์ในเครื่อง':e.message),'err',10000)}
+  hideBusy();render()}
+};
+
+/* ================= boot ================= */
+if(typeof document!=='undefined'){render()}
+</script>
+</body>
+</html>
